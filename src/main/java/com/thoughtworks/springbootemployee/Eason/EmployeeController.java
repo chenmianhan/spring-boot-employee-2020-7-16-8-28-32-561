@@ -53,4 +53,9 @@ public class EmployeeController {
         newEmployee.setGender(employee.getGender());
         return newEmployee;
     }
+
+    @DeleteMapping("/{id}")
+    public Employee deleteEmployee(@PathVariable int id) {
+        return new Employee(id);
+    }
 }
