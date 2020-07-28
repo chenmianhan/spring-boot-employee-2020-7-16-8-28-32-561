@@ -1,10 +1,7 @@
 package com.thoughtworks.springbootemployee.Eason;
 
 import com.thoughtworks.springbootemployee.model.Employee;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,5 +39,10 @@ public class EmployeeController {
             employees.add(new Employee(i, "male"));
         }
         return employees;
+    }
+
+    @PostMapping
+    public Employee addEmployee(@RequestBody Employee employee) {
+        return new Employee(employee.getId(), employee.getGender());
     }
 }
