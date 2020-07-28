@@ -45,4 +45,12 @@ public class EmployeeController {
     public Employee addEmployee(@RequestBody Employee employee) {
         return new Employee(employee.getId(), employee.getGender());
     }
+
+    @PutMapping("/{id}")
+    public Employee updateEmployee(@PathVariable int id, @RequestBody Employee employee) {
+        Employee newEmployee = new Employee(id);
+        newEmployee.setId(employee.getId());
+        newEmployee.setGender(employee.getGender());
+        return newEmployee;
+    }
 }
