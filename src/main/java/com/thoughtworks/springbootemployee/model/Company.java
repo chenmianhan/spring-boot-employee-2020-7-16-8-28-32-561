@@ -4,22 +4,22 @@ import java.util.List;
 
 public class Company {
     private int id;
+    private String companyName;
+    private int employeeNumber;
     private List<Employee> employees;
 
     public Company() {
-    }
-
-    public Company(List<Employee> employees) {
-        this.employees = employees;
     }
 
     public Company(int id) {
         this.id = id;
     }
 
-    public Company(Company company) {
-        this.id = company.getId();
-        this.employees = company.getEmployees();
+    public Company(int id, String companyName, int employeeNumber, List<Employee> employees) {
+        this.id = id;
+        this.companyName = companyName;
+        this.employeeNumber = employeeNumber;
+        this.employees = employees;
     }
 
     public int getId() {
@@ -36,5 +36,21 @@ public class Company {
 
     public void setEmployees(List<Employee> employees) {
         this.employees = employees;
+    }
+
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
+    }
+
+    public int getEmployeeNumber() {
+        return employeeNumber;
+    }
+
+    public void setEmployeeNumber(int employeeNumber) {
+        this.employeeNumber = employeeNumber;
     }
 }
