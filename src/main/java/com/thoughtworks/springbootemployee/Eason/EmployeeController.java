@@ -34,4 +34,13 @@ public class EmployeeController {
         }
         return employees;
     }
+
+    @GetMapping(params = {"gender"})
+    public List<Employee> getEmployeesByGender(String gender) {
+        List<Employee> employees = new ArrayList<>();
+        for (int i = 0; i < 2; i++) {
+            employees.add(new Employee(i, "male"));
+        }
+        return employees;
+    }
 }
