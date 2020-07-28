@@ -25,4 +25,13 @@ public class EmployeeController {
     public Employee getEmployeeById(@PathVariable int id) {
         return new Employee(id);
     }
+
+    @GetMapping(params = {"page", "pageSize"})
+    public List<Employee> getEmployeesPagination(int page, int pageSize) {
+        List<Employee> employees = new ArrayList<>();
+        for (int i = 0; i < pageSize; i++) {
+            employees.add(new Employee(i));
+        }
+        return employees;
+    }
 }
