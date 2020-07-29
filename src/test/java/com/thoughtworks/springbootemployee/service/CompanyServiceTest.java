@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.when;
 
@@ -127,5 +128,19 @@ public class CompanyServiceTest {
         //then
         assertEquals(targetCompany.getId(), updatedCompany.getId());
         assertEquals(targetCompany.getCompanyName(), targetCompany.getCompanyName());
+    }
+    @Test
+    void should_return_boolean_when_delete_company_given_id() {
+        //given
+        int id = 3;
+        when(mockedCompanyRepository.findById(id)).thenReturn((new ArrayList<Company>()).stream().filter(employee -> employee.getId() == id).findFirst());
+
+        //when
+        boolean isDelete = companyService.deleteById(id);
+
+        //then
+        assertTrue(isDelete);
+        Mockito.verify(mockedCompanyRepository).deleteById(id);
+
     }
 }

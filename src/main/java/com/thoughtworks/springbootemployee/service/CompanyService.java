@@ -47,5 +47,9 @@ public class CompanyService {
         }
         return company;
     }
+
+    public boolean deleteById(int id) {
+        return false;
+    }
 }
 
