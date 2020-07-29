@@ -3,6 +3,7 @@ package com.thoughtworks.springbootemployee.Eason;
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -38,13 +39,9 @@ public class EmployeeController {
     }
 
     @GetMapping(params = {"page", "pageSize"})
-
-    public List<Employee> getEmployeesPagination(int page, int pageSize) {
-        List<Employee> employees = new ArrayList<>();
-        for (int i = 0; i < pageSize; i++) {
-            employees.add(new Employee(i, "alibaba3", 19, "male", 8000));
-        }
-        return employees;
+    @ResponseStatus(HttpStatus.OK)
+    public Page<Employee> getEmployeesPagination(int page, int pageSize) {
+        return employeeService.findAll(page,pageSize);
     }
 
     @GetMapping(params = {"gender"})
