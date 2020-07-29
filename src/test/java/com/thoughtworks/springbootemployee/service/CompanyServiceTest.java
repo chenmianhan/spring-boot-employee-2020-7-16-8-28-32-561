@@ -5,10 +5,14 @@ import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.repository.CompanyRepository;
 import com.thoughtworks.springbootemployee.repository.EmployeeRepository;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.when;
 
 public class CompanyServiceTest {
     private CompanyRepository mockedCompanyRepository ;
@@ -38,5 +42,15 @@ public class CompanyServiceTest {
         companies.add(new Company(1,"baidu",3,thirdEmployees));
         return companies;
     }
+    @Test
+    void should_return_all_companies_when_get_all_companies_given_no_parameter() {
+        //given
+        when(mockedCompanyRepository.findAll()).thenReturn(generateCompanies());
 
+        //when
+        List<Company> companies = companyService.findAll();
+
+        //then
+        assertEquals(3, companies.size());
+    }
 }
