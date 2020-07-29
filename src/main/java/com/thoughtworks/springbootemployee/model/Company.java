@@ -9,7 +9,7 @@ public class Company {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String companyName;
-    private int employeeNumber;
+    private Integer employeeNumber;
     @OneToMany
     private List<Employee> employees;
 
@@ -18,14 +18,14 @@ public class Company {
         this.id = id;
     }
 
-    public Company(Integer id, String companyName, int employeeNumber, List<Employee> employees) {
+    public Company(Integer id, String companyName, Integer employeeNumber, List<Employee> employees) {
         this.id = id;
         this.companyName = companyName;
         this.employeeNumber = employeeNumber;
         this.employees = employees;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
@@ -49,7 +49,7 @@ public class Company {
         this.companyName = companyName;
     }
 
-    public int getEmployeeNumber() {
+    public Integer getEmployeeNumber() {
         return employeeNumber;
     }
 
