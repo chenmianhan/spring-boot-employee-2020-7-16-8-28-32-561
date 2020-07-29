@@ -36,9 +36,9 @@ public class CompanyServiceTest {
         firstEmployees.add(new Employee(5, "baidu3", 19, "male", 8000));
         companies.add(new Company(1,"baidu",3,secondEmployees));
         List<Employee> thirdEmployees = new ArrayList<>();
-        thirdEmployees.add(new Employee(3, "tencent1", 20, "male", 6000));
-        thirdEmployees.add(new Employee(4, "tencent2", 19, "female", 7000));
-        thirdEmployees.add(new Employee(5, "tencent3", 19, "male", 8000));
+        thirdEmployees.add(new Employee(6, "tencent1", 20, "male", 6000));
+        thirdEmployees.add(new Employee(7, "tencent2", 19, "female", 7000));
+        thirdEmployees.add(new Employee(8, "tencent3", 19, "male", 8000));
         companies.add(new Company(2,"tencent",3,thirdEmployees));
         return companies;
     }
@@ -64,5 +64,21 @@ public class CompanyServiceTest {
 
         //then
         assertEquals("baidu", company.getCompanyName());
+    }
+
+    @Test
+    void should_return_baidu_employees_when_get_employee_by_id_given_1() {
+        //given
+        int id = 1;
+        when(mockedCompanyRepository.findById(id)).thenReturn(generateCompanies().stream().filter(company -> company.getId() == id).findFirst());
+
+        //when
+        List<Employee> employees=companyService.getEmployeesByCompanyId(id);
+
+        //then
+        assertEquals(3, employees.get(0).getId());
+        assertEquals(4, employees.get(1).getId());
+        assertEquals(5, employees.get(2).getId());
+
     }
 }
