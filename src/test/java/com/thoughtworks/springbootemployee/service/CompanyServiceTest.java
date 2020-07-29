@@ -36,10 +36,10 @@ public class CompanyServiceTest {
         firstEmployees.add(new Employee(5, "baidu3", 19, "male", 8000));
         companies.add(new Company(1,"baidu",3,secondEmployees));
         List<Employee> thirdEmployees = new ArrayList<>();
-        thirdEmployees.add(new Employee(3, "baidu1", 20, "male", 6000));
-        thirdEmployees.add(new Employee(4, "baidu2", 19, "female", 7000));
-        thirdEmployees.add(new Employee(5, "baidu3", 19, "male", 8000));
-        companies.add(new Company(1,"baidu",3,thirdEmployees));
+        thirdEmployees.add(new Employee(3, "tencent1", 20, "male", 6000));
+        thirdEmployees.add(new Employee(4, "tencent2", 19, "female", 7000));
+        thirdEmployees.add(new Employee(5, "tencent3", 19, "male", 8000));
+        companies.add(new Company(2,"tencent",3,thirdEmployees));
         return companies;
     }
     @Test
@@ -54,9 +54,9 @@ public class CompanyServiceTest {
         assertEquals(3, companies.size());
     }
     @Test
-    void should_return_baidu_when_get_company_by_id_given_2() {
+    void should_return_baidu_when_get_company_by_id_given_1() {
         //given
-        int id = 2;
+        int id = 1;
         when(mockedCompanyRepository.findById(id)).thenReturn(generateCompanies().stream().filter(company -> company.getId() == id).findFirst());
 
         //when
