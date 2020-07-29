@@ -33,5 +33,9 @@ public class CompanyService {
     public Page<Company> findAll(int page, int pageSize) {
         return companyRepository.findAll(PageRequest.of(page,pageSize));
     }
+
+    public Company save(Company newCompany) {
+        return companyRepository.save(newCompany);
+    }
 }
 

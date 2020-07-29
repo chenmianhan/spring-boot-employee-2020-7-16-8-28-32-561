@@ -7,20 +7,18 @@ import java.util.List;
 public class Company {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
     private String companyName;
     private int employeeNumber;
     @OneToMany
     private List<Employee> employees;
 
-    public Company() {
-    }
 
     public Company(int id) {
         this.id = id;
     }
 
-    public Company(int id, String companyName, int employeeNumber, List<Employee> employees) {
+    public Company(Integer id, String companyName, int employeeNumber, List<Employee> employees) {
         this.id = id;
         this.companyName = companyName;
         this.employeeNumber = employeeNumber;

@@ -94,4 +94,20 @@ public class CompanyServiceTest {
         //then
         Mockito.verify(mockedCompanyRepository).findAll(PageRequest.of(page, pageSize));
     }
+    @Test
+    void should_return_insert_company_when_insert_company_given_a_new_company() {
+        //given
+
+        List<Employee> forthEmployees = new ArrayList<>();
+        forthEmployees.add(new Employee(9, "SCUT1", 20, "male", 6000));
+        forthEmployees.add(new Employee(10, "SCUT2", 19, "female", 7000));
+        Company newCompany = new Company(null, "SCUT", 2,  forthEmployees);
+        when(mockedCompanyRepository.save(newCompany)).thenReturn(newCompany);
+
+        //when
+        Company returnCompany = companyService.save(newCompany);
+
+        //then
+        assertEquals(newCompany.getCompanyName(), returnCompany.getCompanyName());
+    }
 }
