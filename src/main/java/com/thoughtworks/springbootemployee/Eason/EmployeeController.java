@@ -45,12 +45,9 @@ public class EmployeeController {
     }
 
     @GetMapping(params = {"gender"})
+    @ResponseStatus(HttpStatus.OK)
     public List<Employee> getEmployeesByGender(String gender) {
-        List<Employee> employees = new ArrayList<>();
-        employees.add(new Employee(4, "alibaba1", 20, "male", 6000));
-        employees.add(new Employee(11, "tengxun2", 19, "female", 7000));
-        employees.add(new Employee(6, "alibaba3", 19, "male", 8000));
-        return employees.stream().filter(employee -> employee.getGender().equals(gender)).collect(Collectors.toList());
+        return employeeService.findAllByGender(gender);
     }
 
 
