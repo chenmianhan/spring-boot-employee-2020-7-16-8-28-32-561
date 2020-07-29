@@ -83,4 +83,22 @@ public class EmployeeServiceTest {
         //then
         assertEquals(3, maleEmployees.size());
     }
+
+    @Test
+    void should_return_inserted_employee_when_insert_employee_given_a_new_employee() {
+        //given
+        Employee newEmployee = new Employee(null, "Xiaohei", 15, "Female", 8000);
+        when(mockedEmployeeRepository.save(newEmployee)).thenReturn(new Employee(5, "Xiaohei", 15, "Female", 8000));
+
+
+        //when
+        Employee returnEmployee = employeeService.save(newEmployee);
+
+        //then
+        assertEquals(5, returnEmployee.getId());
+        assertEquals(newEmployee.getAge(), returnEmployee.getAge());
+        assertEquals(newEmployee.getGender(), returnEmployee.getGender());
+        assertEquals(newEmployee.getName(), returnEmployee.getName());
+        assertEquals(newEmployee.getSalary(), returnEmployee.getSalary());
+    }
 }

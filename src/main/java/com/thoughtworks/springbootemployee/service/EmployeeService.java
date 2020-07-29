@@ -29,6 +29,10 @@ public class EmployeeService {
     }
 
     public List<Employee> findAllByGender(String gender) {
+        return employeeRepository.findAllByGender(gender);
+    }
+
+    public Employee save(Employee newEmployee) {
         return null;
     }
 }
