@@ -18,7 +18,7 @@ public class CompanyController {
         employees.add(new Employee(4, "alibaba1", 20, "male", 6000));
         employees.add(new Employee(11, "tengxun2", 19, "female", 7000));
         employees.add(new Employee(6, "alibaba3", 19, "male", 8000));
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < pageSize; i++) {
             companies.add(new Company(i, "alibaba", 200, employees));
         }
         return companies;
@@ -63,7 +63,6 @@ public class CompanyController {
     @PutMapping("/{id}")
     public Company updateCompany(@PathVariable int id, @RequestBody Company newCompany) {
         Company oldCompany = new Company(id);
-        oldCompany.setId(newCompany.getId());
         oldCompany.setEmployees(newCompany.getEmployees());
         oldCompany.setCompanyName(newCompany.getCompanyName());
         oldCompany.setEmployeeNumber(newCompany.getEmployeeNumber());
