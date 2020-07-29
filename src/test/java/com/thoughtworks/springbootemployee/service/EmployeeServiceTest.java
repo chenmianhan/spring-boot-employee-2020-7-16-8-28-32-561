@@ -125,6 +125,7 @@ public class EmployeeServiceTest {
     void should_return_boolean_when_delete_employee_given_id() {
         //given
         int id = 3;
+        when(mockedEmployeeRepository.findById(id)).thenReturn((new ArrayList<Employee>()).stream().filter(employee -> employee.getId() == id).findFirst());
 
         //when
         boolean isDelete = employeeService.deleteById(id);
