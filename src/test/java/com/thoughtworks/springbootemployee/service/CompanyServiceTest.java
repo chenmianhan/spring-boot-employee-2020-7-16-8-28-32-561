@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.when;
 
 public class CompanyServiceTest {
@@ -116,9 +117,7 @@ public class CompanyServiceTest {
         //given
         int id = 1;
         Company targetCompany;
-        List<Employee> targetEmployees = new ArrayList<>();
-        targetEmployees.add(new Employee(9, "baidu4", 20, "male", 6000));
-        targetCompany=new Company(1, "baiduu", 3, targetEmployees);
+        targetCompany=new Company(1, "baiduu", 3, null);
         when(mockedCompanyRepository.findById(id)).thenReturn(generateCompanies().stream().filter(employee -> employee.getId() == id).findFirst());
         when(mockedCompanyRepository.save(targetCompany)).thenReturn(targetCompany);
 

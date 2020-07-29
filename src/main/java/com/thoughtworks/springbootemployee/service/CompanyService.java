@@ -41,7 +41,6 @@ public class CompanyService {
     public Company updateEmployee(int id, Company targetCompany) {
         Company company=companyRepository.findById(id).orElse(null);
         if(company!=null){
-         if(targetCompany.getEmployees()!=null)company.setEmployees(targetCompany.getEmployees());
          if(targetCompany.getCompanyName()!=null)company.setCompanyName(targetCompany.getCompanyName());
          if(targetCompany.getEmployeeNumber()!=null)company.setEmployeeNumber(targetCompany.getEmployeeNumber());
         companyRepository.save(company);
