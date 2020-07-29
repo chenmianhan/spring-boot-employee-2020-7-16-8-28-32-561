@@ -53,7 +53,8 @@ public class EmployeeService {
     }
 
     public boolean deleteById(int id) {
+        employeeRepository.deleteById(id);
 
-        return false;
+        return !employeeRepository.findById(id).isPresent();
     }
 }
