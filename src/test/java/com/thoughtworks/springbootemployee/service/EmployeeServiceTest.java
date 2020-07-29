@@ -43,4 +43,17 @@ public class EmployeeServiceTest {
         //then
         assertEquals(5, employees.size());
     }
+
+    @Test
+    void should_return_Xiaoming_when_get_employee_by_id_given_0() {
+        //given
+        int id = 0;
+        when(mockedEmployeeRepository.findById(id)).thenReturn(generateEmployees().stream().filter(employee -> employee.getId() == id).findFirst());
+
+        //when
+        Employee employee = employeeService.findById(id);
+
+        //then
+        assertEquals("Xiaoming", employee.getName());
+    }
 }
