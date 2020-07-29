@@ -9,6 +9,7 @@ import org.springframework.data.domain.PageRequest;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
@@ -68,5 +69,18 @@ public class EmployeeServiceTest {
 
         //then
         Mockito.verify(mockedEmployeeRepository).findAll(PageRequest.of(page, pageSize));
+    }
+
+    @Test
+    void should_return_3_size_employee_list_when_find_by_gender_given_gender_is_male() {
+        //given
+        String gender = "Male";
+        when(mockedEmployeeRepository.findAllByGender(gender)).thenReturn(generateEmployees().stream().filter(employee -> employee.getGender().equals(gender)).collect(Collectors.toList()));
+
+        //when
+        List<Employee> maleEmployees = employeeService.findAllByGender(gender);
+
+        //then
+        assertEquals(3, maleEmployees.size());
     }
 }

@@ -27,4 +27,8 @@ public class EmployeeService {
     public Employee findById(int id) {
         return employeeRepository.findById(id).orElse(null);
     }
+
+    public List<Employee> findAllByGender(String gender) {
+        return null;
+    }
 }
