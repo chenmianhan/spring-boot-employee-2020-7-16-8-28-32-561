@@ -36,7 +36,19 @@ public class EmployeeService {
         return employeeRepository.save(newEmployee);
     }
 
-    public Employee updateEmployee(int id, Employee targetEmployee) {
-        return null;
+    public Employee updateEmployee(int id, Employee updatedEmployee) {
+        Employee targetEmployee = findById(id);
+        if (targetEmployee != null) {
+            if (updatedEmployee.getName() != null)
+                targetEmployee.setName(updatedEmployee.getName());
+            if (updatedEmployee.getGender() != null)
+                targetEmployee.setGender(updatedEmployee.getGender());
+            if (updatedEmployee.getAge() != null)
+                targetEmployee.setAge(updatedEmployee.getAge());
+            if (updatedEmployee.getSalary() != null)
+                targetEmployee.setSalary(updatedEmployee.getSalary());
+            save(targetEmployee);
+        }
+        return targetEmployee;
     }
 }
