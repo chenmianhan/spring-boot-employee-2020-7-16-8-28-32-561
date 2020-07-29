@@ -33,6 +33,6 @@ public class EmployeeService {
     }
 
     public Employee save(Employee newEmployee) {
-        return null;
+        return employeeRepository.save(newEmployee);
     }
 }
