@@ -50,7 +50,7 @@ public class EmployeeController {
 
     @PutMapping("/{id}")
     public Employee updateEmployee(@PathVariable int id, @RequestBody Employee employee) {
-        Employee newEmployee = new Employee(id);
+        Employee newEmployee = new Employee();
         newEmployee.setId(employee.getId());
         newEmployee.setName(employee.getName());
         newEmployee.setGender(employee.getGender());

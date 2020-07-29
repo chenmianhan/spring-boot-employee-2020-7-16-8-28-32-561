@@ -9,16 +9,16 @@ import javax.persistence.Id;
 public class Employee {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
     private String name;
-    private int age;
+    private Integer age;
     private String gender;
-    private double salary;
+    private Integer salary;
 
     public Employee() {
     }
 
-    public Employee(int id, String name, int age, String gender, double salary) {
+    public Employee(Integer id, String name, Integer age, String gender, Integer salary) {
         this.id = id;
         this.name = name;
         this.age = age;
@@ -26,24 +26,12 @@ public class Employee {
         this.salary = salary;
     }
 
-    public Employee(int id) {
-        this.id = id;
-    }
-
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
-    }
-
-    public String getGender() {
-        return gender;
-    }
-
-    public void setGender(String gender) {
-        this.gender = gender;
     }
 
     public String getName() {
@@ -54,19 +42,27 @@ public class Employee {
         this.name = name;
     }
 
-    public int getAge() {
+    public Integer getAge() {
         return age;
     }
 
-    public void setAge(int age) {
+    public void setAge(Integer age) {
         this.age = age;
     }
 
-    public double getSalary() {
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public Integer getSalary() {
         return salary;
     }
 
-    public void setSalary(double salary) {
+    public void setSalary(Integer salary) {
         this.salary = salary;
     }
 }
