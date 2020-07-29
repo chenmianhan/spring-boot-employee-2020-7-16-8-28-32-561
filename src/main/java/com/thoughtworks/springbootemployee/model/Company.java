@@ -14,8 +14,8 @@ public class Company {
     private List<Employee> employees;
 
 
-    public Company(int id) {
-        this.id = id;
+    public Company() {
+
     }
 
     public Company(Integer id, String companyName, Integer employeeNumber, List<Employee> employees) {
