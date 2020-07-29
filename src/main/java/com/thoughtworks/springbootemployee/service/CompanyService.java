@@ -3,6 +3,8 @@ package com.thoughtworks.springbootemployee.service;
 import com.thoughtworks.springbootemployee.model.Company;
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.repository.CompanyRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -26,6 +28,10 @@ public class CompanyService {
         Company company = companyRepository.findById(id).orElse(null);
         if(company==null)return null;
         return company.getEmployees();
+    }
+
+    public Page<Company> findAll(int page, int pageSize) {
+        return companyRepository.findAll(PageRequest.of(page,pageSize));
     }
 }
 
