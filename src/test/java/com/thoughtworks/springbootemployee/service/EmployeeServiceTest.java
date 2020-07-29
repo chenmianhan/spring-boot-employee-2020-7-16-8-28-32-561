@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
 public class EmployeeServiceTest {
@@ -118,5 +119,19 @@ public class EmployeeServiceTest {
         assertEquals(targetEmployee.getGender(), updatedEmployee.getGender());
         assertEquals(targetEmployee.getName(), updatedEmployee.getName());
         assertEquals(targetEmployee.getSalary(), updatedEmployee.getSalary());
+    }
+
+    @Test
+    void should_return_boolean_when_delete_employee_given_id() {
+        //given
+        int id = 3;
+
+        //when
+        boolean isDelete = employeeService.deleteById(id);
+
+        //then
+        assertTrue(isDelete);
+        Mockito.verify(mockedEmployeeRepository).deleteById(id);
+
     }
 }

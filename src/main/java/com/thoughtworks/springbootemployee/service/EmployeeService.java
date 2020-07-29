@@ -51,4 +51,9 @@ public class EmployeeService {
         }
         return targetEmployee;
     }
+
+    public boolean deleteById(int id) {
+
+        return false;
+    }
 }
