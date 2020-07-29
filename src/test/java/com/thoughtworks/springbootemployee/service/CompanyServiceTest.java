@@ -53,4 +53,16 @@ public class CompanyServiceTest {
         //then
         assertEquals(3, companies.size());
     }
+    @Test
+    void should_return_baidu_when_get_company_by_id_given_2() {
+        //given
+        int id = 2;
+        when(mockedCompanyRepository.findById(id)).thenReturn(generateCompanies().stream().filter(company -> company.getId() == id).findFirst());
+
+        //when
+        Company company= companyService.findById(id);
+
+        //then
+        assertEquals("baidu", company.getCompanyName());
+    }
 }
