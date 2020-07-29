@@ -6,6 +6,7 @@ import com.thoughtworks.springbootemployee.repository.CompanyRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import org.springframework.data.domain.PageRequest;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -81,6 +82,16 @@ public class CompanyServiceTest {
         assertEquals(3, employees.get(0).getId());
         assertEquals(4, employees.get(1).getId());
         assertEquals(5, employees.get(2).getId());
+    }
+    @Test
+    void should_return_company_id_2when_get_company_given_page_2_and_page_size_2() {
+        //given
+        int page = 2;
+        int pageSize = 2;
+        //when
+        companyService.findAll(page, pageSize);
 
+        //then
+        Mockito.verify(mockedCompanyRepository).findAll(PageRequest.of(page, pageSize));
     }
 }
