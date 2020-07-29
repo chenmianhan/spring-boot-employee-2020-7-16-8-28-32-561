@@ -1,9 +1,6 @@
 package com.thoughtworks.springbootemployee.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.List;
 
 @Entity
@@ -13,6 +10,7 @@ public class Company {
     private int id;
     private String companyName;
     private int employeeNumber;
+    @OneToMany
     private List<Employee> employees;
 
     public Company() {
