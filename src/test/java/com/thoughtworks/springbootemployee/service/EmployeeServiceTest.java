@@ -5,6 +5,7 @@ import com.thoughtworks.springbootemployee.repository.EmployeeRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import org.springframework.data.domain.PageRequest;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,5 +56,17 @@ public class EmployeeServiceTest {
 
         //then
         assertEquals("Xiaoming", employee.getName());
+    }
+
+    @Test
+    void should_return_employees_in_the_specified_range_when_get_employees_given_page_2_and_page_size_2() {
+        //given
+        int page = 2;
+        int pageSize = 2;
+        //when
+        employeeService.findAll(page, pageSize);
+
+        //then
+        Mockito.verify(mockedEmployeeRepository).findAll(PageRequest.of(page, pageSize));
     }
 }
