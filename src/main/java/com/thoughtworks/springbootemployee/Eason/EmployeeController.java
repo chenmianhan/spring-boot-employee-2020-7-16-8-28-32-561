@@ -26,20 +26,19 @@ public class EmployeeController {
         return employeeService.save(employee);
     }
     @GetMapping
+    @ResponseStatus(HttpStatus.OK)
     public List<Employee> getAllEmployees() {
-        List<Employee> employees = new ArrayList<>();
-        employees.add(new Employee(4, "alibaba1", 20, "male", 6000));
-        employees.add(new Employee(11, "tengxun2", 19, "female", 7000));
-        employees.add(new Employee(6, "alibaba3", 19, "male", 8000));
-        return employees;
+        return employeeService.findAll();
     }
 
     @GetMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
     public Employee getEmployeeById(@PathVariable int id) {
-        return new Employee(id, "alibaba3", 19, "male", 8000);
+        return employeeService.findById(id);
     }
 
     @GetMapping(params = {"page", "pageSize"})
+
     public List<Employee> getEmployeesPagination(int page, int pageSize) {
         List<Employee> employees = new ArrayList<>();
         for (int i = 0; i < pageSize; i++) {
