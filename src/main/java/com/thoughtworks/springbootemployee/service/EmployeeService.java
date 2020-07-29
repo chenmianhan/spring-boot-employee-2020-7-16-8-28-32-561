@@ -47,7 +47,7 @@ public class EmployeeService {
                 targetEmployee.setAge(updatedEmployee.getAge());
             if (updatedEmployee.getSalary() != null)
                 targetEmployee.setSalary(updatedEmployee.getSalary());
-            save(targetEmployee);
+            targetEmployee= save(targetEmployee);
         }
         return targetEmployee;
     }
