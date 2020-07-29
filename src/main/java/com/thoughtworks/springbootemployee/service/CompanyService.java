@@ -37,5 +37,9 @@ public class CompanyService {
     public Company save(Company newCompany) {
         return companyRepository.save(newCompany);
     }
+
+    public Company updateEmployee(int id, Company targetCompany) {
+        return null;
+    }
 }
 

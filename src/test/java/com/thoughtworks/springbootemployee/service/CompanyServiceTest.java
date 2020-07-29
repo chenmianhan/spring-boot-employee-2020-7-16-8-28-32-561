@@ -110,4 +110,23 @@ public class CompanyServiceTest {
         //then
         assertEquals(newCompany.getCompanyName(), returnCompany.getCompanyName());
     }
+
+    @Test
+    void should_return_updated_company_when_update_company_give_company_id_and_target_company() {
+        //given
+        int id = 1;
+        Company targetCompany;
+        List<Employee> targetEmployees = new ArrayList<>();
+        targetEmployees.add(new Employee(9, "baidu4", 20, "male", 6000));
+        targetCompany=new Company(1, "baiduu", 3, targetEmployees);
+        when(mockedCompanyRepository.findById(id)).thenReturn(generateCompanies().stream().filter(employee -> employee.getId() == id).findFirst());
+        when(mockedCompanyRepository.save(targetCompany)).thenReturn(targetCompany);
+
+        //when
+        Company updatedCompany = companyService.updateEmployee(id, targetCompany);
+
+        //then
+        assertEquals(targetCompany.getId(), updatedCompany.getId());
+        assertEquals(targetCompany.getCompanyName(), targetCompany.getCompanyName());
+    }
 }
