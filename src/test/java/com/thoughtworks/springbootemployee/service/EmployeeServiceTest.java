@@ -2,6 +2,7 @@ package com.thoughtworks.springbootemployee.service;
 
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.repository.EmployeeRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
@@ -12,6 +13,15 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
 public class EmployeeServiceTest {
+    private EmployeeRepository mockedEmployeeRepository;
+    private EmployeeService employeeService;
+
+    @BeforeEach
+    void init() {
+        mockedEmployeeRepository = Mockito.mock(EmployeeRepository.class);
+        employeeService = new EmployeeService(mockedEmployeeRepository);
+    }
+
     private List<Employee> generateEmployees() {
         List<Employee> employees = new ArrayList<>();
         employees.add(new Employee(0, "Xiaoming", 20, "Male", 10000));
@@ -25,9 +35,7 @@ public class EmployeeServiceTest {
     @Test
     void should_return_all_employees_when_get_all_employee_given_no_parameter() {
         //given
-        EmployeeRepository mockedEmployeeRepository = Mockito.mock(EmployeeRepository.class);
         when(mockedEmployeeRepository.findAll()).thenReturn(generateEmployees());
-        EmployeeService employeeService = new EmployeeService(mockedEmployeeRepository);
 
         //when
         List<Employee> employees = employeeService.findAll();
