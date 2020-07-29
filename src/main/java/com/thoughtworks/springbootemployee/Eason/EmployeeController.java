@@ -52,12 +52,14 @@ public class EmployeeController {
 
 
     @PutMapping("/{id}")
+    @ResponseStatus(HttpStatus.ACCEPTED)
     public Employee updateEmployee(@PathVariable int id, @RequestBody Employee employee) {
         return employeeService.updateEmployee(id,employee);
     }
 
     @DeleteMapping("/{id}")
-    public Employee deleteEmployee(@PathVariable int id) {
-        return new Employee(id, "alibaba3", 19, "male", 8000);
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public void deleteEmployee(@PathVariable int id) {
+        employeeService.deleteById(id);
     }
 }
