@@ -90,7 +90,6 @@ public class EmployeeServiceTest {
         Employee newEmployee = new Employee(null, "Xiaohei", 15, "Female", 8000);
         when(mockedEmployeeRepository.save(newEmployee)).thenReturn(new Employee(5, "Xiaohei", 15, "Female", 8000));
 
-
         //when
         Employee returnEmployee = employeeService.save(newEmployee);
 
@@ -100,5 +99,24 @@ public class EmployeeServiceTest {
         assertEquals(newEmployee.getGender(), returnEmployee.getGender());
         assertEquals(newEmployee.getName(), returnEmployee.getName());
         assertEquals(newEmployee.getSalary(), returnEmployee.getSalary());
+    }
+
+    @Test
+    void should_return_updated_employee_when_update_employee_give_employee_id_and_target_employee() {
+        //given
+        int id = 1;
+        Employee targetEmployee = new Employee(1, "Xiaohong1", 20, "Male", 9000);
+        when(mockedEmployeeRepository.findById(id)).thenReturn(generateEmployees().stream().filter(employee -> employee.getId() == id).findFirst());
+        when(mockedEmployeeRepository.save(targetEmployee)).thenReturn(targetEmployee);
+
+        //when
+        Employee updatedEmployee = employeeService.updateEmployee(id, targetEmployee);
+
+        //then
+        assertEquals(targetEmployee.getId(), updatedEmployee.getId());
+        assertEquals(targetEmployee.getAge(), updatedEmployee.getAge());
+        assertEquals(targetEmployee.getGender(), updatedEmployee.getGender());
+        assertEquals(targetEmployee.getName(), updatedEmployee.getName());
+        assertEquals(targetEmployee.getSalary(), updatedEmployee.getSalary());
     }
 }

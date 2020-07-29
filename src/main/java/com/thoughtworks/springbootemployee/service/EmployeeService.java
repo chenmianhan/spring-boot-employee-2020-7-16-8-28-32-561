@@ -35,4 +35,8 @@ public class EmployeeService {
     public Employee save(Employee newEmployee) {
         return employeeRepository.save(newEmployee);
     }
+
+    public Employee updateEmployee(int id, Employee targetEmployee) {
+        return null;
+    }
 }
