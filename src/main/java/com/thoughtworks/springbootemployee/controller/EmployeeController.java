@@ -1,4 +1,4 @@
-package com.thoughtworks.springbootemployee.Eason;
+package com.thoughtworks.springbootemployee.controller;
 
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.service.EmployeeService;
