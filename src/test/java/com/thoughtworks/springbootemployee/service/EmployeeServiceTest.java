@@ -68,14 +68,14 @@ public class EmployeeServiceTest {
         //given
         int page = 2;
         int pageSize = 2;
-        given(mockedEmployeeRepository.findAll(PageRequest.of(2,2)))
+        given(mockedEmployeeRepository.findAll(PageRequest.of(2, 2)))
                 .willReturn(new PageImpl<>(generateEmployees().stream().skip(2).limit(2).collect(Collectors.toList())));
         //when
-        List<Employee> employees=employeeService.findAll(page, pageSize).getContent();
+        List<Employee> employees = employeeService.findAll(page, pageSize).getContent();
 
         //then
         Mockito.verify(mockedEmployeeRepository).findAll(PageRequest.of(page, pageSize));
-        assertEquals(generateEmployees().get(2).getId(),employees.get(0).getId());
+        assertEquals(generateEmployees().get(2).getId(), employees.get(0).getId());
     }
 
     @Test
@@ -169,4 +169,17 @@ public class EmployeeServiceTest {
         assertEquals(IllegalOperationException.class, exception.getClass());
     }
 
+    @Test
+    void should_throw_no_such_data_exception_when_update_employee_given_not_exist_id() {
+        //given
+        int id = 5;
+        Employee employee = new Employee(5, "123", 1, "female", 1000);
+        given(mockedEmployeeRepository.findById(id)).willReturn(null);
+
+        //when
+        Exception exception = assertThrows(NoSuchDataException.class, () -> employeeService.updateEmployee(id, employee));
+
+        //then
+        assertEquals(NoSuchDataException.class, exception.getClass());
+    }
 }

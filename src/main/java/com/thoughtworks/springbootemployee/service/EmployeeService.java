@@ -44,7 +44,6 @@ public class EmployeeService {
     }
 
     public Employee updateEmployee(int id, Employee updatedEmployee) throws NoSuchDataException, IllegalOperationException {
-        //TODO illegalOperation
         if (id != updatedEmployee.getId()) {
             throw new IllegalOperationException();
         }
