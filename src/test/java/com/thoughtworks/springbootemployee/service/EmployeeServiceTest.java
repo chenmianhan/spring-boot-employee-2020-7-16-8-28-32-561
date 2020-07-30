@@ -6,7 +6,6 @@ import com.thoughtworks.springbootemployee.repository.EmployeeRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 
@@ -51,7 +50,7 @@ public class EmployeeServiceTest {
     }
 
     @Test
-    void should_return_Xiaoming_when_get_employee_by_id_given_0() {
+    void should_return_Xiaoming_when_get_employee_by_id_given_0() throws NoSuchDataException {
         //given
         int id = 0;
         when(mockedEmployeeRepository.findById(id)).thenReturn(generateEmployees().stream().filter(employee -> employee.getId() == id).findFirst());
@@ -109,7 +108,7 @@ public class EmployeeServiceTest {
     }
 
     @Test
-    void should_return_updated_employee_when_update_employee_give_employee_id_and_target_employee() {
+    void should_return_updated_employee_when_update_employee_give_employee_id_and_target_employee() throws NoSuchDataException {
         //given
         int id = 1;
         Employee targetEmployee = new Employee(1, "Xiaohong1", 20, "Male", 9000);
@@ -154,4 +153,5 @@ public class EmployeeServiceTest {
 
         assertEquals(NoSuchDataException.class,exception.getClass());
     }
+
 }

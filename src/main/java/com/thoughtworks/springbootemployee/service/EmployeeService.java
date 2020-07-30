@@ -1,5 +1,6 @@
 package com.thoughtworks.springbootemployee.service;
 
+import com.thoughtworks.springbootemployee.exception.NoSuchDataException;
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.repository.EmployeeRepository;
 import org.springframework.data.domain.Page;
@@ -7,6 +8,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class EmployeeService {
@@ -24,9 +26,12 @@ public class EmployeeService {
         return employeeRepository.findAll(PageRequest.of(page, pageSize));
     }
 
-    public Employee findById(int id) {
-      //TODO
-        return employeeRepository.findById(id).orElse(null);
+    public Employee findById(int id) throws NoSuchDataException {
+        Optional<Employee> employeeOptional = employeeRepository.findById(id);
+        if (!employeeOptional.isPresent())
+            throw new NoSuchDataException();
+        else
+            return employeeOptional.get();
     }
 
     public List<Employee> findAllByGender(String gender) {
@@ -37,7 +42,7 @@ public class EmployeeService {
         return employeeRepository.save(newEmployee);
     }
 
-    public Employee updateEmployee(int id, Employee updatedEmployee) {
+    public Employee updateEmployee(int id, Employee updatedEmployee) throws NoSuchDataException {
         //TODO
         Employee targetEmployee = findById(id);
         if (targetEmployee != null) {
