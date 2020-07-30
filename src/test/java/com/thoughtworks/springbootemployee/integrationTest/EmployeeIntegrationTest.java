@@ -9,12 +9,14 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Collections;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -105,6 +107,7 @@ public class EmployeeIntegrationTest {
 
         String url = String.format("/employees?page=%s&pageSize=%s", page, pageSize);
         mockMvc.perform(get(url))
+                .andExpect(status().isOk())
                 .andExpect(jsonPath("$.content", hasSize(2)))
                 .andExpect(jsonPath("$.content[0].id").value(thirdEmployee.getId()))
                 .andExpect(jsonPath("$.content[0].name").value(thirdEmployee.getName()))
@@ -145,6 +148,7 @@ public class EmployeeIntegrationTest {
 
         String url = String.format("/employees?gender=%s", gender);
         mockMvc.perform(get(url))
+                .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(2)))
                 .andExpect(jsonPath("$[0].id").value(firstEmployee.getId()))
                 .andExpect(jsonPath("$[0].name").value(firstEmployee.getName()))
@@ -158,6 +162,32 @@ public class EmployeeIntegrationTest {
                 .andExpect(jsonPath("$[1].salary").value(thirdEmployee.getSalary()))
                 .andExpect(jsonPath("$[1].gender").value(thirdEmployee.getGender()))
                 .andExpect(jsonPath("$[1].companyId").value(thirdEmployee.getCompanyId()));
+
+        //then
+    }
+
+    @Test
+    void should_add_employee_when_hit_post_employees_endpoints_given_employee_info() throws Exception {
+        //given
+        Company company = new Company(null, "alibaba", 200, Collections.emptyList());
+        company = companyRepository.save(company);
+        String employeeInfo = "{\n" +
+                "    \"name\":\"Xiaoming\",\n" +
+                "    \"age\":20,\n" +
+                "    \"gender\":\"male\",\n" +
+                "    \"salary\":10000,\n" +
+                "    \"companyId\":" + company.getId() + "\n" +
+                "}";
+        //when
+        mockMvc.perform(post(("/employees")).contentType(MediaType.APPLICATION_JSON).content(employeeInfo))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.id").isNumber())
+                .andExpect(jsonPath("$.name").value("Xiaoming"))
+                .andExpect(jsonPath("$.age").value(20))
+                .andExpect(jsonPath("$.salary").value(10000))
+                .andExpect(jsonPath("$.gender").value("male"))
+                .andExpect(jsonPath("$.companyId").value(company.getId()));
+
 
         //then
     }
