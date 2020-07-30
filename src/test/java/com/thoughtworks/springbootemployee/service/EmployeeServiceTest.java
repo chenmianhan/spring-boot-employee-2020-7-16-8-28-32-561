@@ -109,7 +109,7 @@ public class EmployeeServiceTest {
     }
 
     @Test
-    void should_return_updated_employee_when_update_employee_give_employee_id_and_target_employee() throws NoSuchDataException {
+    void should_return_updated_employee_when_update_employee_give_employee_id_and_target_employee() throws NoSuchDataException, IllegalOperationException {
         //given
         int id = 1;
         Employee targetEmployee = new Employee(1, "Xiaohong1", 20, "Male", 9000);
@@ -160,7 +160,7 @@ public class EmployeeServiceTest {
     void should_throw_illegal_operation_exception_when_update_employee_given_illegal_id_4_and_employee_id_3() {
         //given
         int illegalId = 4;
-        Employee employee = generateEmployees().get(4);
+        Employee employee = generateEmployees().get(3);
 
         //when
         Exception exception = assertThrows(IllegalOperationException.class, () -> employeeService.updateEmployee(illegalId, employee));
