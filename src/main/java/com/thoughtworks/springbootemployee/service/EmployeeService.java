@@ -48,19 +48,20 @@ public class EmployeeService {
             throw new IllegalOperationException();
         }
         //TODO
-        Employee targetEmployee = findById(id);
-        if (targetEmployee != null) {
-            if (updatedEmployee.getName() != null)
-                targetEmployee.setName(updatedEmployee.getName());
-            if (updatedEmployee.getGender() != null)
-                targetEmployee.setGender(updatedEmployee.getGender());
-            if (updatedEmployee.getAge() != null)
-                targetEmployee.setAge(updatedEmployee.getAge());
-            if (updatedEmployee.getSalary() != null)
-                targetEmployee.setSalary(updatedEmployee.getSalary());
-            //TODO
-            targetEmployee= save(targetEmployee);
-        }
+        Optional<Employee> targetEmployeeOptional = employeeRepository.findById(id);
+        if (!targetEmployeeOptional.isPresent())
+            throw new NoSuchDataException();
+        Employee targetEmployee = targetEmployeeOptional.get();
+        if (updatedEmployee.getName() != null)
+            targetEmployee.setName(updatedEmployee.getName());
+        if (updatedEmployee.getGender() != null)
+            targetEmployee.setGender(updatedEmployee.getGender());
+        if (updatedEmployee.getAge() != null)
+            targetEmployee.setAge(updatedEmployee.getAge());
+        if (updatedEmployee.getSalary() != null)
+            targetEmployee.setSalary(updatedEmployee.getSalary());
+        //TODO
+        targetEmployee = save(targetEmployee);
         return targetEmployee;
     }
 

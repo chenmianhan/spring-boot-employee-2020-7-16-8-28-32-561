@@ -12,6 +12,7 @@ import org.springframework.data.domain.PageRequest;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -147,7 +148,7 @@ public class EmployeeServiceTest {
         //given
         int notExistId = 5;
 
-        given(mockedEmployeeRepository.findById(notExistId)).willReturn(null);
+        given(mockedEmployeeRepository.findById(notExistId)).willReturn(Optional.of(null));
 
         // when
         Exception exception = assertThrows(NoSuchDataException.class, () -> employeeService.findById(notExistId));
