@@ -5,6 +5,8 @@ import com.thoughtworks.springbootemployee.repository.EmployeeRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 
 import java.util.ArrayList;
@@ -13,6 +15,7 @@ import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.when;
 
 public class EmployeeServiceTest {
@@ -65,11 +68,14 @@ public class EmployeeServiceTest {
         //given
         int page = 2;
         int pageSize = 2;
+        given(mockedEmployeeRepository.findAll(PageRequest.of(2,2)))
+                .willReturn(new PageImpl<>(generateEmployees().stream().skip(2).limit(2).collect(Collectors.toList())));
         //when
-        employeeService.findAll(page, pageSize);
+        List<Employee> employees=employeeService.findAll(page, pageSize).getContent();
 
         //then
         Mockito.verify(mockedEmployeeRepository).findAll(PageRequest.of(page, pageSize));
+        assertEquals(generateEmployees().get(2).getId(),employees.get(0).getId());
     }
 
     @Test
