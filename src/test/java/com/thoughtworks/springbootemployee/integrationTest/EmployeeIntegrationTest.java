@@ -57,5 +57,28 @@ public class EmployeeIntegrationTest {
         //then
     }
 
+    @Test
+    void should_get_employee_when_hit_get_employee_by_id_given_id() throws Exception {
+        //given
+        Company company = new Company(null, "alibaba", 200, Collections.emptyList());
+        company = companyRepository.save(company);
+        Employee firstEmployee = new Employee(null, "ali1", 18, "male", 2000, company.getId());
+        Employee secondEmployee = new Employee(null, "ali2", 20, "female", 2000, company.getId());
+        firstEmployee = employeeRepository.save(firstEmployee);
+        secondEmployee = employeeRepository.save(secondEmployee);
+
+        //when
+        mockMvc.perform(get("/employees/" + secondEmployee.getId()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").isNumber())
+                .andExpect(jsonPath("$.name").value(secondEmployee.getName()))
+                .andExpect(jsonPath("$.age").value(secondEmployee.getAge()))
+                .andExpect(jsonPath("$.salary").value(secondEmployee.getSalary()))
+                .andExpect(jsonPath("$.gender").value(secondEmployee.getGender()))
+                .andExpect(jsonPath("$.companyId").value(secondEmployee.getCompanyId()));
+
+        //then
+    }
+
 
 }
