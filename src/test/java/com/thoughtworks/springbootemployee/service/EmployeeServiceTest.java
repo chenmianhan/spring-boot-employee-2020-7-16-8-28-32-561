@@ -143,15 +143,17 @@ public class EmployeeServiceTest {
 
     @Test
     void should_throw_no_such_data_exception_when_find_by_id_given_not_exist_id() {
-          //given
-
+        //given
         int notExistId = 5;
-         // when
 
+        given(mockedEmployeeRepository.findById(notExistId)).willReturn(null);
+
+        // when
         Exception exception = assertThrows(NoSuchDataException.class, () -> employeeService.findById(notExistId));
-        //then
 
-        assertEquals(NoSuchDataException.class,exception.getClass());
+        //then
+        assertEquals(NoSuchDataException.class, exception.getClass());
     }
+
 
 }
