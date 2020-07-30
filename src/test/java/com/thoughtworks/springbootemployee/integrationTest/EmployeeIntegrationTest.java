@@ -14,7 +14,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.Collections;
 
 import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.hasValue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -47,15 +46,16 @@ public class EmployeeIntegrationTest {
         mockMvc.perform(get("/employees"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(1)))
-                .andExpect(jsonPath("$[0].id", hasValue(employee.getId())))
-                .andExpect(jsonPath("$[0].name", hasValue(employee.getName())))
-                .andExpect(jsonPath("$[0].age", hasValue(employee.getAge())))
-                .andExpect(jsonPath("$[0].salary", hasValue(employee.getSalary())))
-                .andExpect(jsonPath("$[0].gender", hasValue(employee.getGender())))
-                .andExpect(jsonPath("$[0].companyId", hasValue(employee.getCompanyId())));
+                .andExpect(jsonPath("$[0].id").isNumber())
+                .andExpect(jsonPath("$[0].name").value(employee.getName()))
+                .andExpect(jsonPath("$[0].age").value(employee.getAge()))
+                .andExpect(jsonPath("$[0].salary").value(employee.getSalary()))
+                .andExpect(jsonPath("$[0].gender").value(employee.getGender()))
+                .andExpect(jsonPath("$[0].companyId").value(employee.getCompanyId()));
 
 
         //then
     }
+
 
 }
