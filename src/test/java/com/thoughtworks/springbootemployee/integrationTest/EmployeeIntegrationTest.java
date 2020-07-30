@@ -219,4 +219,18 @@ public class EmployeeIntegrationTest {
 
         //then
     }
+
+    @Test
+    void should_return_status_accepted_when_delete_a_employee_given_id() throws Exception {
+        //given
+        Company company = new Company(null, "alibaba", 200, Collections.emptyList());
+        company = companyRepository.save(company);
+        Employee employee = new Employee(null, "XiaoMing", 19, "female", 1000, company.getId());
+        employee = employeeRepository.save(employee);
+        //when
+        mockMvc.perform(delete(("/employees/" + employee.getId())))
+                .andExpect(status().isAccepted());
+
+        //then
+    }
 }
