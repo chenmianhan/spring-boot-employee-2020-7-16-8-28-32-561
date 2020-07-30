@@ -15,8 +15,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.Collections;
 
 import static org.hamcrest.Matchers.hasSize;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -180,6 +179,35 @@ public class EmployeeIntegrationTest {
                 "}";
         //when
         mockMvc.perform(post(("/employees")).contentType(MediaType.APPLICATION_JSON).content(employeeInfo))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.id").isNumber())
+                .andExpect(jsonPath("$.name").value("Xiaoming"))
+                .andExpect(jsonPath("$.age").value(20))
+                .andExpect(jsonPath("$.salary").value(10000))
+                .andExpect(jsonPath("$.gender").value("male"))
+                .andExpect(jsonPath("$.companyId").value(company.getId()));
+
+
+        //then
+    }
+
+    @Test
+    void should_get_updated_employee_when_hit_put_employee_endpoint_given_id_and_employee_info() throws Exception {
+        //given
+        Company company = new Company(null, "alibaba", 200, Collections.emptyList());
+        company = companyRepository.save(company);
+        Employee employee = new Employee(null, "XiaoMing", 19, "female", 1000, company.getId());
+        employee = employeeRepository.save(employee);
+        String employeeInfo = "{\n" +
+                "    \"id\":" + employee.getId() + ",\n" +
+                "    \"name\":\"Xiaoming\",\n" +
+                "    \"age\":20,\n" +
+                "    \"gender\":\"male\",\n" +
+                "    \"salary\":10000,\n" +
+                "    \"companyId\":" + company.getId() + "\n" +
+                "}";
+        //when
+        mockMvc.perform(put(("/employees/" + employee.getId())).contentType(MediaType.APPLICATION_JSON).content(employeeInfo))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id").isNumber())
                 .andExpect(jsonPath("$.name").value("Xiaoming"))

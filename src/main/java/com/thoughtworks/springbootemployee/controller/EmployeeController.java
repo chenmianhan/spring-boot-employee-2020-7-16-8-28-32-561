@@ -52,7 +52,7 @@ public class EmployeeController {
 
 
     @PutMapping("/{id}")
-    @ResponseStatus(HttpStatus.ACCEPTED)
+    @ResponseStatus(HttpStatus.CREATED)
     public Employee updateEmployee(@PathVariable int id, @RequestBody Employee employee) throws NoSuchDataException, IllegalOperationException {
         return employeeService.updateEmployee(id, employee);
     }
