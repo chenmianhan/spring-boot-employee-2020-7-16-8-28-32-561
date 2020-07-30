@@ -30,7 +30,7 @@ public class CompanyController {
     @ResponseStatus(HttpStatus.ACCEPTED)
     public Page<Company> getCompaniesByPageAndPageSize(int page, int pageSize) {
 
-        return companyService.findAll(page,pageSize);
+        return companyService.findAll(page-1,pageSize);
     }
 
     @GetMapping
