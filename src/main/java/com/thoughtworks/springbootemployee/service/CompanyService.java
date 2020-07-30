@@ -21,10 +21,12 @@ public class CompanyService {
     }
 
     public Company findById(int id) {
+        //TODO
         return companyRepository.findById(id).orElse(null);
     }
 
     public List<Employee> getEmployeesByCompanyId(int id) {
+        //TODO
         Company company = companyRepository.findById(id).orElse(null);
         if(company==null)return null;
         return company.getEmployees();
@@ -39,6 +41,7 @@ public class CompanyService {
     }
 
     public Company updateEmployee(int id, Company targetCompany) {
+        //TODO
         Company company=companyRepository.findById(id).orElse(null);
         if(company!=null){
          if(targetCompany.getCompanyName()!=null)company.setCompanyName(targetCompany.getCompanyName());
@@ -49,6 +52,7 @@ public class CompanyService {
     }
 
     public boolean deleteById(int id) {
+        //TODO
         companyRepository.deleteById(id);
 
         return !companyRepository.findById(id).isPresent();

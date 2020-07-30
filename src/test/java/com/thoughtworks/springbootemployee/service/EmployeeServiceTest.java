@@ -1,5 +1,6 @@
 package com.thoughtworks.springbootemployee.service;
 
+import com.thoughtworks.springbootemployee.exception.NoSuchDataException;
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.repository.EmployeeRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -13,8 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.when;
 
@@ -140,5 +140,18 @@ public class EmployeeServiceTest {
         assertTrue(isDelete);
         Mockito.verify(mockedEmployeeRepository).deleteById(id);
 
+    }
+
+    @Test
+    void should_throw_no_such_data_exception_when_find_by_id_given_not_exist_id() {
+          //given
+
+        int notExistId = 5;
+         // when
+
+        Exception exception = assertThrows(NoSuchDataException.class, () -> employeeService.findById(notExistId));
+        //then
+
+        assertEquals(NoSuchDataException.class,exception.getClass());
     }
 }
