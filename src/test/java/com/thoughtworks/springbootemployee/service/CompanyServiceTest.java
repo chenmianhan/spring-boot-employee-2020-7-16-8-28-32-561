@@ -139,17 +139,19 @@ public class CompanyServiceTest {
     void should_return_insert_company_when_insert_company_given_a_new_company() {
         //given
 
-        List<Employee> forthEmployees = new ArrayList<>();
-        forthEmployees.add(new Employee(9, "SCUT1", 20, "male", 6000));
-        forthEmployees.add(new Employee(10, "SCUT2", 19, "female", 7000));
-        Company newCompany = new Company(null, "SCUT", 2,  forthEmployees);
-        when(mockedCompanyRepository.save(newCompany)).thenReturn(newCompany);
+        List<Employee> newEmployees = new ArrayList<>();
+        newEmployees.add(new Employee(12, "SCUT1", 20, "male", 6000));
+        newEmployees.add(new Employee(13, "SCUT2", 19, "female", 7000));
+        Company newCompany = new Company(null, "SCUT", 2, newEmployees);
+        Company mockedCompany = new Company(4, "SCUT", 2, newEmployees);
+        when(mockedCompanyRepository.save(newCompany)).thenReturn(mockedCompany);
 
         //when
         Company returnCompany = companyService.save(newCompany);
 
         //then
-        assertEquals(newCompany.getCompanyName(), returnCompany.getCompanyName());
+        assertEquals(mockedCompany.getCompanyName(), returnCompany.getCompanyName());
+        assertEquals(4, returnCompany.getId());
     }
 
     @Test
