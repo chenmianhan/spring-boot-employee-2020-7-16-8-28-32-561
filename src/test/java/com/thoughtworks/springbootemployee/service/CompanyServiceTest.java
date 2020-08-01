@@ -13,6 +13,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.when;
 
 public class CompanyServiceTest {
@@ -70,16 +71,21 @@ public class CompanyServiceTest {
     }
 
     @Test
-    void should_return_baidu_when_get_company_by_id_given_1() {
+    void should_return_id_1_company_when_get_company_by_id_given_1() {
         //given
+        List<Employee> secondEmployees = new ArrayList<>();
+        secondEmployees.add(new Employee(3, "baidu1", 20, "male", 6000));
+        Company mockedCompany = new Company(1, "baidu", 1, secondEmployees);
         int id = 1;
-        when(mockedCompanyRepository.findById(id)).thenReturn(generateCompanies().stream().filter(company -> company.getId() == id).findFirst());
+        given(mockedCompanyRepository.findById(id)).willReturn(java.util.Optional.of(mockedCompany));
 
         //when
         Company company = companyService.findById(id);
 
         //then
         assertEquals("baidu", company.getCompanyName());
+        assertEquals(1, company.getId());
+
     }
 
     @Test
