@@ -65,10 +65,8 @@ public class EmployeeService {
         return targetEmployee;
     }
 
-    public boolean deleteById(int id) {
+    public void deleteById(int id) {
         //TODO
         employeeRepository.deleteById(id);
-
-        return !employeeRepository.findById(id).isPresent();
     }
 }

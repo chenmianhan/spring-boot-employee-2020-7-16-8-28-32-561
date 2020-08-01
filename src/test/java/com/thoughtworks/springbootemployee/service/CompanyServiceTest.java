@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.when;
 
@@ -122,7 +121,7 @@ public class CompanyServiceTest {
         mockedCompanies.add(new Company(2, "tencent", 1, thirdEmployees));
 
         List<Employee> forthEmployees = new ArrayList<>();
-        thirdEmployees.add(new Employee(9, "oocl1", 20, "male", 6000));
+        forthEmployees.add(new Employee(9, "oocl1", 20, "male", 6000));
         mockedCompanies.add(new Company(3, "oocl", 1, forthEmployees));
 
         given(mockedCompanyRepository.findAll(PageRequest.of(page - 1, pageSize)))
@@ -170,17 +169,20 @@ public class CompanyServiceTest {
         assertEquals(mockedCompany.getCompanyName(), newCompany.getCompanyName());
         assertEquals(mockedCompany.getEmployeeNumber(), newCompany.getEmployeeNumber());
     }
+
     @Test
-    void should_return_boolean_when_delete_company_given_id() {
+    void should_deleteById_run_a_time__when_delete_company_given_id() {
         //given
+        List<Employee> forthEmployees = new ArrayList<>();
+        forthEmployees.add(new Employee(9, "oocl1", 20, "male", 6000));
+        Company mockedCompany = new Company(3, "oocl", 1, forthEmployees);
         int id = 3;
-        when(mockedCompanyRepository.findById(id)).thenReturn((new ArrayList<Company>()).stream().filter(employee -> employee.getId() == id).findFirst());
+        when(mockedCompanyRepository.findById(id)).thenReturn(java.util.Optional.of(mockedCompany));
 
         //when
-        boolean isDelete = companyService.deleteById(id);
+        companyService.deleteById(id);
 
         //then
-        assertTrue(isDelete);
         Mockito.verify(mockedCompanyRepository).deleteById(id);
 
     }

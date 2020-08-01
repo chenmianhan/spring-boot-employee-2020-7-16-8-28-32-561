@@ -11,7 +11,7 @@ import java.util.List;
 
 @Service
 public class CompanyService {
-    private CompanyRepository companyRepository;
+    private final CompanyRepository companyRepository;
     public CompanyService(CompanyRepository companyRepository) {
         this.companyRepository=companyRepository;
     }
@@ -33,7 +33,7 @@ public class CompanyService {
     }
 
     public Page<Company> findAll(int page, int pageSize) {
-        return companyRepository.findAll(PageRequest.of(page,pageSize));
+        return companyRepository.findAll(PageRequest.of(page - 1, pageSize));
     }
 
     public Company save(Company newCompany) {
@@ -51,11 +51,10 @@ public class CompanyService {
         return company;
     }
 
-    public boolean deleteById(int id) {
+    public void deleteById(int id) {
         //TODO
         companyRepository.deleteById(id);
 
-        return !companyRepository.findById(id).isPresent();
     }
 }
 
