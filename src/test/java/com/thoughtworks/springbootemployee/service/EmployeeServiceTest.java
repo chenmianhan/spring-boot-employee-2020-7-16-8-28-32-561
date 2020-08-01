@@ -126,20 +126,21 @@ public class EmployeeServiceTest {
     @Test
     void should_return_updated_employee_when_update_employee_give_employee_id_and_target_employee() throws NoSuchDataException, IllegalOperationException {
         //given
-        int id = 1;
-        Employee targetEmployee = new Employee(1, "Xiaohong1", 20, "Male", 9000);
-        when(mockedEmployeeRepository.findById(id)).thenReturn(generateEmployees().stream().filter(employee -> employee.getId() == id).findFirst());
-        when(mockedEmployeeRepository.save(targetEmployee)).thenReturn(targetEmployee);
+        int id = 2;
+        Employee beforeUpdateEmployee = new Employee(2, "Spike", 15, "male", 1000);
+        Employee afterUpdateEmployee = new Employee(2, "Spike", 20, "male", 10000);
+        given(mockedEmployeeRepository.findById(id)).willReturn(Optional.of(beforeUpdateEmployee));
+        when(mockedEmployeeRepository.save(beforeUpdateEmployee)).thenReturn(afterUpdateEmployee);
 
         //when
-        Employee updatedEmployee = employeeService.updateEmployee(id, targetEmployee);
+        Employee updatedEmployee = employeeService.updateEmployee(id, beforeUpdateEmployee);
 
         //then
-        assertEquals(targetEmployee.getId(), updatedEmployee.getId());
-        assertEquals(targetEmployee.getAge(), updatedEmployee.getAge());
-        assertEquals(targetEmployee.getGender(), updatedEmployee.getGender());
-        assertEquals(targetEmployee.getName(), updatedEmployee.getName());
-        assertEquals(targetEmployee.getSalary(), updatedEmployee.getSalary());
+        assertEquals(afterUpdateEmployee.getId(), updatedEmployee.getId());
+        assertEquals(afterUpdateEmployee.getAge(), updatedEmployee.getAge());
+        assertEquals(afterUpdateEmployee.getGender(), updatedEmployee.getGender());
+        assertEquals(afterUpdateEmployee.getName(), updatedEmployee.getName());
+        assertEquals(afterUpdateEmployee.getSalary(), updatedEmployee.getSalary());
     }
 
     @Test
