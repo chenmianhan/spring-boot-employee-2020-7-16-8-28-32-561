@@ -47,10 +47,10 @@ public class EmployeeService {
         if (id != newEmployee.getId()) {
             throw new IllegalOperationException("id is not corresponding");
         }
-        Optional<Employee> targetEmployeeOptional = employeeRepository.findById(id);
-        if (!targetEmployeeOptional.isPresent())
+        Optional<Employee> oldEmployeeOptional = employeeRepository.findById(id);
+        if (!oldEmployeeOptional.isPresent())
             throw new NoSuchDataException("No such id employee");
-        Employee oldEmployee = targetEmployeeOptional.get();
+        Employee oldEmployee = oldEmployeeOptional.get();
         if (newEmployee.getName() != null)
             oldEmployee.setName(newEmployee.getName());
         if (newEmployee.getGender() != null)
@@ -63,8 +63,9 @@ public class EmployeeService {
         return oldEmployee;
     }
 
-    public void deleteById(int id) {
-        //TODO
+    public void deleteById(int id) throws NoSuchDataException {
+        if (!employeeRepository.findById(id).isPresent())
+            throw new NoSuchDataException("No such id employee");
         employeeRepository.deleteById(id);
     }
 }
