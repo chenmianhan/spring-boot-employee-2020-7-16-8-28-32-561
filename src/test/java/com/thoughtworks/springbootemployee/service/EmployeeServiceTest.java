@@ -109,14 +109,14 @@ public class EmployeeServiceTest {
     @Test
     void should_return_inserted_employee_when_insert_employee_given_a_new_employee() {
         //given
-        Employee newEmployee = new Employee(null, "Xiaohei", 15, "Female", 8000);
-        when(mockedEmployeeRepository.save(newEmployee)).thenReturn(new Employee(5, "Xiaohei", 15, "Female", 8000));
+        Employee newEmployee = new Employee(null, "Newer", 15, "Female", 8000);
+        when(mockedEmployeeRepository.save(newEmployee)).thenReturn(new Employee(6, "Newer", 15, "Female", 8000));
 
         //when
         Employee returnEmployee = employeeService.save(newEmployee);
 
         //then
-        assertEquals(5, returnEmployee.getId());
+        assertEquals(6, returnEmployee.getId());
         assertEquals(newEmployee.getAge(), returnEmployee.getAge());
         assertEquals(newEmployee.getGender(), returnEmployee.getGender());
         assertEquals(newEmployee.getName(), returnEmployee.getName());
