@@ -15,7 +15,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.when;
 
@@ -144,16 +145,15 @@ public class EmployeeServiceTest {
     }
 
     @Test
-    void should_return_boolean_when_delete_employee_given_id() {
+    void should_deleteById_run_a_time_when_delete_employee_given_id() {
         //given
-        int id = 3;
-        when(mockedEmployeeRepository.findById(id)).thenReturn((new ArrayList<Employee>()).stream().filter(employee -> employee.getId() == id).findFirst());
+        int id = 6;
+        given(mockedEmployeeRepository.findById(id)).willReturn(Optional.of(new Employee(null, "Newer", 15, "Female", 8000)));
 
         //when
-        boolean isDelete = employeeService.deleteById(id);
+        employeeService.deleteById(id);
 
         //then
-        assertTrue(isDelete);
         Mockito.verify(mockedEmployeeRepository).deleteById(id);
 
     }
