@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
@@ -44,12 +43,12 @@ public class EmployeeServiceTest {
     void should_return_6_employees_when_get_all_employee_given_no_parameter() {
         //given
         List<Employee> employees = new ArrayList<>();
-        employees.add(new Employee(0, "James", 20, "Male", 10000));
-        employees.add(new Employee(1, "Penny", 19, "Female", 10000));
-        employees.add(new Employee(2, "Spike", 15, "Male", 10000));
-        employees.add(new Employee(3, "Albert", 20, "Male", 10000));
-        employees.add(new Employee(4, "Quentin", 19, "Female", 10000));
-        employees.add(new Employee(5, "Gavin", 15, "Male", 10000));
+        employees.add(new Employee(0, "James", 20, "male", 10000));
+        employees.add(new Employee(1, "Penny", 19, "female", 10000));
+        employees.add(new Employee(2, "Spike", 15, "male", 10000));
+        employees.add(new Employee(3, "Albert", 20, "male", 10000));
+        employees.add(new Employee(4, "Quentin", 19, "male", 10000));
+        employees.add(new Employee(5, "Gavin", 15, "male", 10000));
         when(mockedEmployeeRepository.findAll()).thenReturn(employees);
 
         //when
@@ -78,8 +77,8 @@ public class EmployeeServiceTest {
         int page = 2;
         int pageSize = 2;
         List<Employee> employees = new LinkedList<>();
-        employees.add(new Employee(2, "Spike", 15, "Male", 10000));
-        employees.add(new Employee(3, "Albert", 15, "Male", 10000));
+        employees.add(new Employee(2, "Spike", 15, "male", 10000));
+        employees.add(new Employee(3, "Albert", 15, "male", 10000));
         given(mockedEmployeeRepository.findAll(PageRequest.of(page - 1, pageSize)))
                 .willReturn(new PageImpl<>(employees));
 
@@ -93,16 +92,18 @@ public class EmployeeServiceTest {
     }
 
     @Test
-    void should_return_3_size_employee_list_when_find_by_gender_given_gender_is_male() {
+    void should_return_1_employee_list_when_find_by_gender_given_gender_is_male() {
         //given
-        String gender = "Male";
-        when(mockedEmployeeRepository.findAllByGender(gender)).thenReturn(generateEmployees().stream().filter(employee -> employee.getGender().equals(gender)).collect(Collectors.toList()));
+        List<Employee> employees = new ArrayList<>();
+        employees.add(new Employee(1, "Penny", 19, "female", 10000));
+        String gender = "female";
+        given(mockedEmployeeRepository.findAllByGender(gender)).willReturn(employees);
 
         //when
-        List<Employee> maleEmployees = employeeService.findAllByGender(gender);
+        List<Employee> femaleEmployees = employeeService.findAllByGender(gender);
 
         //then
-        assertEquals(3, maleEmployees.size());
+        assertEquals(1, femaleEmployees.size());
     }
 
     @Test
