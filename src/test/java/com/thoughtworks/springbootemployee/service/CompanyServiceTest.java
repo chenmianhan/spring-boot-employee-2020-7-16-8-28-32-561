@@ -158,17 +158,17 @@ public class CompanyServiceTest {
     void should_return_updated_company_when_update_company_give_company_id_and_target_company() {
         //given
         int id = 1;
-        Company targetCompany;
-        targetCompany=new Company(1, "baiduu", 3, null);
-        when(mockedCompanyRepository.findById(id)).thenReturn(generateCompanies().stream().filter(employee -> employee.getId() == id).findFirst());
-        when(mockedCompanyRepository.save(targetCompany)).thenReturn(targetCompany);
+        Company mockedCompany = new Company(1, "TW", 2, null);
+        when(mockedCompanyRepository.findById(id)).thenReturn(java.util.Optional.of(mockedCompany));
+        when(mockedCompanyRepository.save(mockedCompany)).thenReturn(mockedCompany);
 
         //when
-        Company updatedCompany = companyService.updateEmployee(id, targetCompany);
+        Company newCompany = companyService.updateEmployee(id, mockedCompany);
 
         //then
-        assertEquals(targetCompany.getId(), updatedCompany.getId());
-        assertEquals(targetCompany.getCompanyName(), targetCompany.getCompanyName());
+        assertEquals(mockedCompany.getId(), newCompany.getId());
+        assertEquals(mockedCompany.getCompanyName(), newCompany.getCompanyName());
+        assertEquals(mockedCompany.getEmployeeNumber(), newCompany.getEmployeeNumber());
     }
     @Test
     void should_return_boolean_when_delete_company_given_id() {
