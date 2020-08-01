@@ -187,11 +187,11 @@ public class EmployeeServiceTest {
     void should_throw_no_such_data_exception_when_update_employee_given_not_exist_id() {
         //given
         int id = 5;
-        Employee employee = new Employee(5, "123", 1, "female", 1000);
-        given(mockedEmployeeRepository.findById(id)).willReturn(null);
+        Employee newEmployee = new Employee(5, "Gavin", 20, "male", 9000);
+        given(mockedEmployeeRepository.findById(id)).willReturn(Optional.empty());
 
         //when
-        Exception exception = assertThrows(NoSuchDataException.class, () -> employeeService.updateEmployee(id, employee));
+        Exception exception = assertThrows(NoSuchDataException.class, () -> employeeService.updateEmployee(id, newEmployee));
 
         //then
         assertEquals(NoSuchDataException.class, exception.getClass());

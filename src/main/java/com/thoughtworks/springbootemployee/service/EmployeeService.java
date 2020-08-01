@@ -30,7 +30,7 @@ public class EmployeeService {
     public Employee findById(int id) throws NoSuchDataException {
         Optional<Employee> employeeOptional = employeeRepository.findById(id);
         if (!employeeOptional.isPresent())
-            throw new NoSuchDataException();
+            throw new NoSuchDataException("No such id employee");
         else
             return employeeOptional.get();
     }
@@ -43,26 +43,24 @@ public class EmployeeService {
         return employeeRepository.save(newEmployee);
     }
 
-    public Employee updateEmployee(int id, Employee updatedEmployee) throws NoSuchDataException, IllegalOperationException {
-        if (id != updatedEmployee.getId()) {
-            throw new IllegalOperationException();
+    public Employee updateEmployee(int id, Employee newEmployee) throws NoSuchDataException, IllegalOperationException {
+        if (id != newEmployee.getId()) {
+            throw new IllegalOperationException("id is not corresponding");
         }
-        //TODO
         Optional<Employee> targetEmployeeOptional = employeeRepository.findById(id);
         if (!targetEmployeeOptional.isPresent())
-            throw new NoSuchDataException();
-        Employee targetEmployee = targetEmployeeOptional.get();
-        if (updatedEmployee.getName() != null)
-            targetEmployee.setName(updatedEmployee.getName());
-        if (updatedEmployee.getGender() != null)
-            targetEmployee.setGender(updatedEmployee.getGender());
-        if (updatedEmployee.getAge() != null)
-            targetEmployee.setAge(updatedEmployee.getAge());
-        if (updatedEmployee.getSalary() != null)
-            targetEmployee.setSalary(updatedEmployee.getSalary());
-        //TODO
-        targetEmployee = save(targetEmployee);
-        return targetEmployee;
+            throw new NoSuchDataException("No such id employee");
+        Employee oldEmployee = targetEmployeeOptional.get();
+        if (newEmployee.getName() != null)
+            oldEmployee.setName(newEmployee.getName());
+        if (newEmployee.getGender() != null)
+            oldEmployee.setGender(newEmployee.getGender());
+        if (newEmployee.getAge() != null)
+            oldEmployee.setAge(newEmployee.getAge());
+        if (newEmployee.getSalary() != null)
+            oldEmployee.setSalary(newEmployee.getSalary());
+        oldEmployee = save(oldEmployee);
+        return oldEmployee;
     }
 
     public void deleteById(int id) {
