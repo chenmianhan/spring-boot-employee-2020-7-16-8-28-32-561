@@ -13,7 +13,6 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.when;
 
 public class CompanyServiceTest {
@@ -47,12 +46,24 @@ public class CompanyServiceTest {
     }
 
     @Test
-    void should_return_all_companies_when_get_all_companies_given_no_parameter() {
+    void should_return_3_companies_when_get_all_companies_given_no_parameter() {
         //given
+        List<Company> companies = new ArrayList<>();
+        List<Employee> firstEmployees = new ArrayList<>();
+        firstEmployees.add(new Employee(0, "alibaba1", 20, "male", 6000));
+        companies.add(new Company(0, "alibaba", 3, firstEmployees));
+
+        List<Employee> secondEmployees = new ArrayList<>();
+        secondEmployees.add(new Employee(4, "baidu1", 20, "male", 6000));
+        companies.add(new Company(1, "baidu", 3, secondEmployees));
+
+        List<Employee> thirdEmployees = new ArrayList<>();
+        thirdEmployees.add(new Employee(6, "tencent1", 20, "male", 6000));
+        companies.add(new Company(2, "tencent", 3, thirdEmployees));
         when(mockedCompanyRepository.findAll()).thenReturn(generateCompanies());
 
         //when
-        List<Company> companies = companyService.findAll();
+        List<Company> foundCompanies = companyService.findAll();
 
         //then
         assertEquals(3, companies.size());
