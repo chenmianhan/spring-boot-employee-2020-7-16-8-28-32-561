@@ -172,13 +172,12 @@ public class EmployeeServiceTest {
     }
 
     @Test
-    void should_throw_illegal_operation_exception_when_update_employee_given_illegal_id_4_and_employee_id_3() {
+    void should_throw_illegal_operation_exception_when_update_employee_given_illegal_id_4_and_employee_id_0() {
         //given
         int illegalId = 4;
-        Employee employee = generateEmployees().get(3);
-
+        Employee oldEmployee = new Employee(0, "James", 20, "male", 10000);
         //when
-        Exception exception = assertThrows(IllegalOperationException.class, () -> employeeService.updateEmployee(illegalId, employee));
+        Exception exception = assertThrows(IllegalOperationException.class, () -> employeeService.updateEmployee(illegalId, oldEmployee));
 
         //then
         assertEquals(IllegalOperationException.class, exception.getClass());
