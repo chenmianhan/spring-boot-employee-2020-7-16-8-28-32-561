@@ -6,6 +6,7 @@ import com.thoughtworks.springbootemployee.repository.CompanyRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 
 import java.util.ArrayList;
@@ -91,8 +92,14 @@ public class CompanyServiceTest {
     @Test
     void should_return_baidu_employees_when_get_employee_by_id_given_1() {
         //given
+
+        List<Employee> secondEmployees = new ArrayList<>();
+        secondEmployees.add(new Employee(3, "baidu1", 20, "male", 6000));
+        secondEmployees.add(new Employee(4, "baidu2", 19, "female", 7000));
+        secondEmployees.add(new Employee(5, "baidu3", 19, "male", 8000));
+        Company mockedCompany = new Company(1, "baidu", 1, secondEmployees);
         int id = 1;
-        when(mockedCompanyRepository.findById(id)).thenReturn(generateCompanies().stream().filter(company -> company.getId() == id).findFirst());
+        when(mockedCompanyRepository.findById(id)).thenReturn(java.util.Optional.of(mockedCompany));
 
         //when
         List<Employee> employees = companyService.getEmployeesByCompanyId(id);
@@ -102,16 +109,31 @@ public class CompanyServiceTest {
         assertEquals(4, employees.get(1).getId());
         assertEquals(5, employees.get(2).getId());
     }
+
     @Test
-    void should_return_company_id_2when_get_company_given_page_2_and_page_size_2() {
+    void should_return_company_id_2_and_3_when_get_company_given_page_2_and_page_size_2() {
         //given
         int page = 2;
         int pageSize = 2;
+        List<Company> mockedCompanies = new ArrayList<>();
+        List<Employee> firstEmployees = new ArrayList<>();
+        List<Employee> thirdEmployees = new ArrayList<>();
+        thirdEmployees.add(new Employee(6, "tencent1", 20, "male", 6000));
+        mockedCompanies.add(new Company(2, "tencent", 1, thirdEmployees));
+
+        List<Employee> forthEmployees = new ArrayList<>();
+        thirdEmployees.add(new Employee(9, "oocl1", 20, "male", 6000));
+        mockedCompanies.add(new Company(3, "oocl", 1, forthEmployees));
+
+        given(mockedCompanyRepository.findAll(PageRequest.of(page - 1, pageSize)))
+                .willReturn(new PageImpl<>(mockedCompanies));
+
         //when
-        companyService.findAll(page, pageSize);
+        List<Company> resultCompanies = companyService.findAll(page, pageSize).getContent();
 
         //then
-        Mockito.verify(mockedCompanyRepository).findAll(PageRequest.of(page, pageSize));
+        assertEquals(2, resultCompanies.get(0).getId());
+        assertEquals(3, resultCompanies.get(1).getId());
     }
     @Test
     void should_return_insert_company_when_insert_company_given_a_new_company() {
