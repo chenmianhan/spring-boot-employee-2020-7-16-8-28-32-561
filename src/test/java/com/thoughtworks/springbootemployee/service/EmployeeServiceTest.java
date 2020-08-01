@@ -30,15 +30,6 @@ public class EmployeeServiceTest {
         employeeService = new EmployeeService(mockedEmployeeRepository);
     }
 
-    private List<Employee> generateEmployees() {
-        List<Employee> employees = new ArrayList<>();
-        employees.add(new Employee(0, "Xiaoming", 20, "Male", 10000));
-        employees.add(new Employee(1, "Xiaohong", 19, "Female", 10000));
-        employees.add(new Employee(2, "Xiaozhi", 15, "Male", 10000));
-        employees.add(new Employee(3, "Xiaogang", 16, "Male", 10000));
-        employees.add(new Employee(4, "Xiaoxia", 15, "Female", 10000));
-        return employees;
-    }
 
     @Test
     void should_return_6_employees_when_get_all_employee_given_no_parameter() {
@@ -157,7 +148,6 @@ public class EmployeeServiceTest {
         Mockito.verify(mockedEmployeeRepository).deleteById(id);
 
     }
-//TODO
     @Test
     void should_throw_no_such_data_exception_when_find_by_id_given_not_exist_id() {
         //given
@@ -198,7 +188,7 @@ public class EmployeeServiceTest {
     }
 
     @Test
-    void should_throw_no_such_data_exception_when_delete_employee_given_not_exist_id() throws NoSuchDataException {
+    void should_throw_no_such_data_exception_when_delete_employee_given_not_exist_id() {
         //given
         int id = 5;
         Employee newEmployee = new Employee(5, "Gavin", 20, "male", 9000);
