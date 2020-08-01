@@ -57,16 +57,16 @@ public class EmployeeServiceTest {
     }
 
     @Test
-    void should_return_Xiaoming_when_get_employee_by_id_given_0() throws NoSuchDataException {
+    void should_return_James_when_get_employee_by_id_given_0should_return_James_when_get_employee_by_id_given_0() throws NoSuchDataException {
         //given
         int id = 0;
-        when(mockedEmployeeRepository.findById(id)).thenReturn(generateEmployees().stream().filter(employee -> employee.getId() == id).findFirst());
+        when(mockedEmployeeRepository.findById(id)).thenReturn(Optional.of(new Employee(0, "James", 20, "Male", 10000)));
 
         //when
         Employee employee = employeeService.findById(id);
 
         //then
-        assertEquals("Xiaoming", employee.getName());
+        assertEquals("James", employee.getName());
     }
 
     @Test
