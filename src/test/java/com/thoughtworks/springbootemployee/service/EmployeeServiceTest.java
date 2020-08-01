@@ -41,19 +41,22 @@ public class EmployeeServiceTest {
     }
 
     @Test
-    void should_return_all_employees_when_get_all_employee_given_no_parameter() {
+    void should_return_6_employees_when_get_all_employee_given_no_parameter() {
         //given
         List<Employee> employees = new ArrayList<>();
         employees.add(new Employee(0, "James", 20, "Male", 10000));
         employees.add(new Employee(1, "Penny", 19, "Female", 10000));
         employees.add(new Employee(2, "Spike", 15, "Male", 10000));
+        employees.add(new Employee(3, "Albert", 20, "Male", 10000));
+        employees.add(new Employee(4, "Quentin", 19, "Female", 10000));
+        employees.add(new Employee(5, "Gavin", 15, "Male", 10000));
         when(mockedEmployeeRepository.findAll()).thenReturn(employees);
 
         //when
         List<Employee> foundEmployees = employeeService.findAll();
 
         //then
-        assertEquals(3, foundEmployees.size());
+        assertEquals(6, foundEmployees.size());
     }
 
     @Test
@@ -70,21 +73,20 @@ public class EmployeeServiceTest {
     }
 
     @Test
-    void should_return_employees_in_the_specified_range_when_get_employees_given_page_2_and_page_size_2() {
+    void should_return_employees_id_2_and_3_when_get_employees_given_page_2_and_page_size_2() {
         //given
         int page = 2;
         int pageSize = 2;
         List<Employee> employees = new LinkedList<>();
-        employees.add(new Employee(2, "Xiaozhi", 15, "Male", 10000));
-        employees.add(new Employee(3, "Xiaogang", 16, "Male", 10000));
-        given(mockedEmployeeRepository.findAll(PageRequest.of(2, 2)))
+        employees.add(new Employee(2, "Spike", 15, "Male", 10000));
+        employees.add(new Employee(3, "Albert", 15, "Male", 10000));
+        given(mockedEmployeeRepository.findAll(PageRequest.of(page - 1, pageSize)))
                 .willReturn(new PageImpl<>(employees));
 
         //when
         List<Employee> resultEmployees = employeeService.findAll(page, pageSize).getContent();
 
         //then
-        Mockito.verify(mockedEmployeeRepository).findAll(PageRequest.of(page, pageSize));
         assertEquals(2, resultEmployees.get(0).getId());
         assertEquals(3, resultEmployees.get(1).getId());
 
