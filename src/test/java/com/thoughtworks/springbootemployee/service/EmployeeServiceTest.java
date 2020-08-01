@@ -11,6 +11,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -42,13 +43,17 @@ public class EmployeeServiceTest {
     @Test
     void should_return_all_employees_when_get_all_employee_given_no_parameter() {
         //given
-        when(mockedEmployeeRepository.findAll()).thenReturn(generateEmployees());
+        List<Employee> employees = new ArrayList<>();
+        employees.add(new Employee(0, "James", 20, "Male", 10000));
+        employees.add(new Employee(1, "Penny", 19, "Female", 10000));
+        employees.add(new Employee(2, "Spike", 15, "Male", 10000));
+        when(mockedEmployeeRepository.findAll()).thenReturn(employees);
 
         //when
-        List<Employee> employees = employeeService.findAll();
+        List<Employee> foundEmployees = employeeService.findAll();
 
         //then
-        assertEquals(5, employees.size());
+        assertEquals(3, foundEmployees.size());
     }
 
     @Test
@@ -69,14 +74,20 @@ public class EmployeeServiceTest {
         //given
         int page = 2;
         int pageSize = 2;
+        List<Employee> employees = new LinkedList<>();
+        employees.add(new Employee(2, "Xiaozhi", 15, "Male", 10000));
+        employees.add(new Employee(3, "Xiaogang", 16, "Male", 10000));
         given(mockedEmployeeRepository.findAll(PageRequest.of(2, 2)))
-                .willReturn(new PageImpl<>(generateEmployees().stream().skip(2).limit(2).collect(Collectors.toList())));
+                .willReturn(new PageImpl<>(employees));
+
         //when
-        List<Employee> employees = employeeService.findAll(page, pageSize).getContent();
+        List<Employee> resultEmployees = employeeService.findAll(page, pageSize).getContent();
 
         //then
         Mockito.verify(mockedEmployeeRepository).findAll(PageRequest.of(page, pageSize));
-        assertEquals(generateEmployees().get(2).getId(), employees.get(0).getId());
+        assertEquals(2, resultEmployees.get(0).getId());
+        assertEquals(3, resultEmployees.get(1).getId());
+
     }
 
     @Test
