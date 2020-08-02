@@ -163,4 +163,23 @@ public class CompanyIntegrationTest {
                 .andExpect(jsonPath("$.employeeNumber").value(2));
         //then
     }
+
+    @Test
+    void should_return_status_accepted_when_delete_a_company_given_id() throws Exception {
+        //given
+        Company company = new Company(null, "SCUT", 20, null);
+        company = companyRepository.save(company);
+        String companyInfo = "{\n" +
+                "    \"id\":" + company.getId() + ",\n" +
+                "\"companyName\":\"TW\",\n" +
+                "\"employeeNumber\":2,\n" +
+                "\"employees\":null\n" +
+                "\n" +
+                "}";
+        //when
+        mockMvc.perform(delete(("/companies/" + company.getId())))
+                .andExpect(status().isAccepted());
+
+        //then
+    }
 }
