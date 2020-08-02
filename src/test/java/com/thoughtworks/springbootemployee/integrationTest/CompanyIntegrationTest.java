@@ -53,4 +53,21 @@ public class CompanyIntegrationTest {
                 .andExpect(jsonPath("$[1].employees").value(empty()));
         //then
     }
+
+    @Test
+    void should_get_company_when_hit_get_employee_by_id_endpoint_given_id() throws Exception {
+        //given
+        Company mockedCompany = new Company(null, "baidu", 1, null);
+        mockedCompany = companyRepository.save(mockedCompany);
+
+        //when
+        mockMvc.perform(get("/companies/" + mockedCompany.getId()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").isNumber())
+                .andExpect(jsonPath("$.companyName").value(mockedCompany.getCompanyName()))
+                .andExpect(jsonPath("$.employeeNumber").value(mockedCompany.getEmployeeNumber()))
+                .andExpect(jsonPath("$.employees").value(empty()));
+
+        //then
+    }
 }
