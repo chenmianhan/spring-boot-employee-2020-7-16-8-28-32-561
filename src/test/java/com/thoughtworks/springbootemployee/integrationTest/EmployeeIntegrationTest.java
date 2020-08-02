@@ -233,4 +233,16 @@ public class EmployeeIntegrationTest {
 
         //then
     }
+
+    @Test
+    void should_return_status_not_found_and_message_No_such_id_employee_when_when_hit_get_employee_by_id_endpoint_given_not_exist_id() throws Exception {
+        //given
+        int id = 100;
+
+        //when
+        mockMvc.perform(get("/employees/" + 100))
+                .andExpect(status().isNotFound());
+
+        //then
+    }
 }
