@@ -1,5 +1,6 @@
 package com.thoughtworks.springbootemployee.controller;
 
+import com.thoughtworks.springbootemployee.exception.NoSuchDataException;
 import com.thoughtworks.springbootemployee.model.Company;
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.service.CompanyService;
@@ -8,7 +9,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -41,7 +41,7 @@ public class CompanyController {
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public Company getCompanyById(@PathVariable int id) {
+    public Company getCompanyById(@PathVariable int id) throws NoSuchDataException {
         return companyService.findById(id);
     }
 

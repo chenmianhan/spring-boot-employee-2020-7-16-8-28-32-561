@@ -29,25 +29,6 @@ public class CompanyServiceTest {
         companyService = new CompanyService(mockedCompanyRepository);
     }
 
-    private List<Company> generateCompanies() {
-        List<Company> companies = new ArrayList<>();
-        List<Employee> firstEmployees = new ArrayList<>();
-        firstEmployees.add(new Employee(0, "alibaba1", 20, "male", 6000));
-        firstEmployees.add(new Employee(1, "alibaba12", 19, "female", 7000));
-        firstEmployees.add(new Employee(2, "alibaba3", 19, "male", 8000));
-        companies.add(new Company(0, "alibaba", 3, firstEmployees));
-        List<Employee> secondEmployees = new ArrayList<>();
-        secondEmployees.add(new Employee(3, "baidu1", 20, "male", 6000));
-        secondEmployees.add(new Employee(4, "baidu2", 19, "female", 7000));
-        secondEmployees.add(new Employee(5, "baidu3", 19, "male", 8000));
-        companies.add(new Company(1, "baidu", 3, secondEmployees));
-        List<Employee> thirdEmployees = new ArrayList<>();
-        thirdEmployees.add(new Employee(6, "tencent1", 20, "male", 6000));
-        thirdEmployees.add(new Employee(7, "tencent2", 19, "female", 7000));
-        thirdEmployees.add(new Employee(8, "tencent3", 19, "male", 8000));
-        companies.add(new Company(2, "tencent", 3, thirdEmployees));
-        return companies;
-    }
 
     @Test
     void should_return_3_companies_when_get_all_companies_given_no_parameter() {
@@ -64,17 +45,17 @@ public class CompanyServiceTest {
         List<Employee> thirdEmployees = new ArrayList<>();
         thirdEmployees.add(new Employee(6, "tencent1", 20, "male", 6000));
         companies.add(new Company(2, "tencent", 3, thirdEmployees));
-        when(mockedCompanyRepository.findAll()).thenReturn(generateCompanies());
+        when(mockedCompanyRepository.findAll()).thenReturn(companies);
 
         //when
         List<Company> foundCompanies = companyService.findAll();
 
         //then
-        assertEquals(3, companies.size());
+        assertEquals(3, foundCompanies.size());
     }
 
     @Test
-    void should_return_id_1_company_when_get_company_by_id_given_1() {
+    void should_return_id_1_company_when_get_company_by_id_given_1() throws NoSuchDataException {
         //given
         List<Employee> secondEmployees = new ArrayList<>();
         secondEmployees.add(new Employee(3, "baidu1", 20, "male", 6000));

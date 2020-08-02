@@ -1,5 +1,6 @@
 package com.thoughtworks.springbootemployee.service;
 
+import com.thoughtworks.springbootemployee.exception.NoSuchDataException;
 import com.thoughtworks.springbootemployee.model.Company;
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.repository.CompanyRepository;
@@ -8,6 +9,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CompanyService {
@@ -20,13 +22,15 @@ public class CompanyService {
         return companyRepository.findAll();
     }
 
-    public Company findById(int id) {
+    public Company findById(int id) throws NoSuchDataException {
         //TODO
+        Optional<Company> companyOptional = companyRepository.findById(id);
+        if (!companyOptional.isPresent())
+            throw new NoSuchDataException("No such id company");
         return companyRepository.findById(id).orElse(null);
     }
 
     public List<Employee> getEmployeesByCompanyId(int id) {
-        //TODO
         Company company = companyRepository.findById(id).orElse(null);
         if(company==null)return null;
         return company.getEmployees();
