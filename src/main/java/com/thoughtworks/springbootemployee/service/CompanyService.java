@@ -24,7 +24,6 @@ public class CompanyService {
     }
 
     public Company findById(int id) throws NoSuchDataException {
-        //TODO
         Optional<Company> companyOptional = companyRepository.findById(id);
         if (!companyOptional.isPresent())
             throw new NoSuchDataException("No such id company");
@@ -45,16 +44,14 @@ public class CompanyService {
         return companyRepository.save(newCompany);
     }
 
-    public Company updateEmployee(int id, Company newCompany) throws IllegalOperationException {
-        //TODO
+    public Company updateEmployee(int id, Company newCompany) throws IllegalOperationException, NoSuchDataException {
         if (id != newCompany.getId()) throw new IllegalOperationException("id is not correspond");
         Company company = companyRepository.findById(id).orElse(null);
-        if (company != null) {
+        if (company == null) throw new NoSuchDataException("No such id company");
 
-            if (newCompany.getCompanyName() != null) company.setCompanyName(newCompany.getCompanyName());
-            if (newCompany.getEmployeeNumber() != null) company.setEmployeeNumber(newCompany.getEmployeeNumber());
-            companyRepository.save(company);
-        }
+        if (newCompany.getCompanyName() != null) company.setCompanyName(newCompany.getCompanyName());
+        if (newCompany.getEmployeeNumber() != null) company.setEmployeeNumber(newCompany.getEmployeeNumber());
+        companyRepository.save(company);
         return company;
     }
 
