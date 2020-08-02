@@ -2,11 +2,14 @@ package com.thoughtworks.springbootemployee.service;
 
 import com.thoughtworks.springbootemployee.exception.IllegalOperationException;
 import com.thoughtworks.springbootemployee.exception.NoSuchDataException;
+import com.thoughtworks.springbootemployee.mapper.EmployeeMapper;
+import com.thoughtworks.springbootemployee.mapper.response.EmployeeResponse;
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.repository.EmployeeRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 
@@ -23,11 +26,14 @@ import static org.mockito.Mockito.when;
 public class EmployeeServiceTest {
     private EmployeeRepository mockedEmployeeRepository;
     private EmployeeService employeeService;
+    @Autowired
+    private EmployeeMapper employeeMapper;
 
     @BeforeEach
     void init() {
+        employeeMapper = new EmployeeMapper();
         mockedEmployeeRepository = Mockito.mock(EmployeeRepository.class);
-        employeeService = new EmployeeService(mockedEmployeeRepository);
+        employeeService = new EmployeeService(mockedEmployeeRepository, employeeMapper);
     }
 
 
@@ -44,7 +50,7 @@ public class EmployeeServiceTest {
         when(mockedEmployeeRepository.findAll()).thenReturn(employees);
 
         //when
-        List<Employee> foundEmployees = employeeService.findAll();
+        List<EmployeeResponse> foundEmployees = employeeService.findAll();
 
         //then
         assertEquals(6, foundEmployees.size());
@@ -57,10 +63,10 @@ public class EmployeeServiceTest {
         when(mockedEmployeeRepository.findById(id)).thenReturn(Optional.of(new Employee(0, "James", 20, "Male", 10000)));
 
         //when
-        Employee employee = employeeService.findById(id);
+        EmployeeResponse employeeResponse = employeeService.findById(id);
 
         //then
-        assertEquals("James", employee.getName());
+        assertEquals("James", employeeResponse.getName());
     }
 
     @Test
@@ -75,7 +81,7 @@ public class EmployeeServiceTest {
                 .willReturn(new PageImpl<>(employees));
 
         //when
-        List<Employee> resultEmployees = employeeService.findAll(page, pageSize).getContent();
+        List<EmployeeResponse> resultEmployees = employeeService.findAll(page, pageSize).getContent();
 
         //then
         assertEquals(2, resultEmployees.get(0).getId());
@@ -92,7 +98,7 @@ public class EmployeeServiceTest {
         given(mockedEmployeeRepository.findAllByGender(gender)).willReturn(employees);
 
         //when
-        List<Employee> femaleEmployees = employeeService.findAllByGender(gender);
+        List<EmployeeResponse> femaleEmployees = employeeService.findAllByGender(gender);
 
         //then
         assertEquals(1, femaleEmployees.size());
@@ -105,14 +111,14 @@ public class EmployeeServiceTest {
         when(mockedEmployeeRepository.save(newEmployee)).thenReturn(new Employee(6, "Newer", 15, "Female", 8000));
 
         //when
-        Employee returnEmployee = employeeService.save(newEmployee);
+        EmployeeResponse employeeResponse = employeeService.save(newEmployee);
 
         //then
-        assertEquals(6, returnEmployee.getId());
-        assertEquals(newEmployee.getAge(), returnEmployee.getAge());
-        assertEquals(newEmployee.getGender(), returnEmployee.getGender());
-        assertEquals(newEmployee.getName(), returnEmployee.getName());
-        assertEquals(newEmployee.getSalary(), returnEmployee.getSalary());
+        assertEquals(6, employeeResponse.getId());
+        assertEquals(newEmployee.getAge(), employeeResponse.getAge());
+        assertEquals(newEmployee.getGender(), employeeResponse.getGender());
+        assertEquals(newEmployee.getName(), employeeResponse.getName());
+        assertEquals(newEmployee.getSalary(), employeeResponse.getSalary());
     }
 
     @Test
@@ -125,7 +131,7 @@ public class EmployeeServiceTest {
         when(mockedEmployeeRepository.save(beforeUpdateEmployee)).thenReturn(afterUpdateEmployee);
 
         //when
-        Employee updatedEmployee = employeeService.updateEmployee(id, beforeUpdateEmployee);
+        EmployeeResponse updatedEmployee = employeeService.updateEmployee(id, beforeUpdateEmployee);
 
         //then
         assertEquals(afterUpdateEmployee.getId(), updatedEmployee.getId());

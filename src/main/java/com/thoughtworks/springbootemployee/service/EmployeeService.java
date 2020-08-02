@@ -2,48 +2,72 @@ package com.thoughtworks.springbootemployee.service;
 
 import com.thoughtworks.springbootemployee.exception.IllegalOperationException;
 import com.thoughtworks.springbootemployee.exception.NoSuchDataException;
+import com.thoughtworks.springbootemployee.mapper.EmployeeMapper;
+import com.thoughtworks.springbootemployee.mapper.response.EmployeeResponse;
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.repository.EmployeeRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class EmployeeService {
     private final EmployeeRepository employeeRepository;
+    @Autowired
+    private final EmployeeMapper employeeMapper;
 
-    public EmployeeService(EmployeeRepository employeeRepository) {
+    public EmployeeService(EmployeeRepository employeeRepository, EmployeeMapper employeeMapper) {
         this.employeeRepository = employeeRepository;
+        this.employeeMapper = employeeMapper;
     }
 
-    public List<Employee> findAll() {
-        return employeeRepository.findAll();
+    public List<EmployeeResponse> findAll() {
+        List<Employee> employees = employeeRepository.findAll();
+        List<EmployeeResponse> employeeResponses = new LinkedList<>();
+        for (Employee employee : employees) {
+            employeeResponses.add(employeeMapper.EmployeeToEmployeeResponse(employee));
+        }
+        return employeeResponses;
     }
 
-    public Page<Employee> findAll(int page, int pageSize) {
-        return employeeRepository.findAll(PageRequest.of(page - 1, pageSize));
+    public Page<EmployeeResponse> findAll(int page, int pageSize) {
+        Page<Employee> employeePage = employeeRepository.findAll(PageRequest.of(page - 1, pageSize));
+        List<Employee> employees = employeePage.getContent();
+        List<EmployeeResponse> employeeResponses = new LinkedList<>();
+        for (Employee employee : employees) {
+            employeeResponses.add(employeeMapper.EmployeeToEmployeeResponse(employee));
+        }
+        return new PageImpl<>(employeeResponses);
     }
 
-    public Employee findById(int id) throws NoSuchDataException {
+    public EmployeeResponse findById(int id) throws NoSuchDataException {
         Optional<Employee> employeeOptional = employeeRepository.findById(id);
         if (!employeeOptional.isPresent())
             throw new NoSuchDataException("No such id employee");
         else
-            return employeeOptional.get();
+            return employeeMapper.EmployeeToEmployeeResponse(employeeOptional.get());
     }
 
-    public List<Employee> findAllByGender(String gender) {
-        return employeeRepository.findAllByGender(gender);
+    public List<EmployeeResponse> findAllByGender(String gender) {
+        List<Employee> employees = employeeRepository.findAllByGender(gender);
+        List<EmployeeResponse> employeeResponses = new LinkedList<>();
+        for (Employee employee : employees) {
+            employeeResponses.add(employeeMapper.EmployeeToEmployeeResponse(employee));
+        }
+        return employeeResponses;
     }
 
-    public Employee save(Employee newEmployee) {
-        return employeeRepository.save(newEmployee);
+    public EmployeeResponse save(Employee newEmployee) {
+        return employeeMapper.EmployeeToEmployeeResponse(employeeRepository.save(newEmployee));
     }
 
-    public Employee updateEmployee(int id, Employee newEmployee) throws NoSuchDataException, IllegalOperationException {
+    public EmployeeResponse updateEmployee(int id, Employee newEmployee) throws NoSuchDataException, IllegalOperationException {
         if (id != newEmployee.getId()) {
             throw new IllegalOperationException("id is not corresponding");
         }
@@ -59,8 +83,8 @@ public class EmployeeService {
             oldEmployee.setAge(newEmployee.getAge());
         if (newEmployee.getSalary() != null)
             oldEmployee.setSalary(newEmployee.getSalary());
-        oldEmployee = save(oldEmployee);
-        return oldEmployee;
+        oldEmployee = employeeRepository.save(oldEmployee);
+        return employeeMapper.EmployeeToEmployeeResponse(oldEmployee);
     }
 
     public void deleteById(int id) throws NoSuchDataException {
