@@ -54,7 +54,7 @@ public class CompanyController {
 
 
     @PutMapping("/{id}")
-    @ResponseStatus(HttpStatus.ACCEPTED)
+    @ResponseStatus(HttpStatus.CREATED)
     public Company updateCompany(@PathVariable int id, @RequestBody Company newCompany) throws IllegalOperationException, NoSuchDataException {
 
         return companyService.updateEmployee(id, newCompany);
