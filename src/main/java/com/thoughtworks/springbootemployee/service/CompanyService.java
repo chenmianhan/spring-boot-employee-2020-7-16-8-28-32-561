@@ -55,8 +55,11 @@ public class CompanyService {
         return company;
     }
 
-    public void deleteById(int id) {
+    public void deleteById(int id) throws NoSuchDataException {
         //TODO
+        Optional<Company> companyOptional = companyRepository.findById(id);
+        if (!companyOptional.isPresent())
+            throw new NoSuchDataException("No such id company");
         companyRepository.deleteById(id);
 
     }

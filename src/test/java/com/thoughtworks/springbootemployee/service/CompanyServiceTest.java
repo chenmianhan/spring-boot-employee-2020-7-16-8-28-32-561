@@ -156,7 +156,7 @@ public class CompanyServiceTest {
     }
 
     @Test
-    void should_deleteById_run_a_time__when_delete_company_given_id() {
+    void should_deleteById_run_a_time__when_delete_company_given_id() throws NoSuchDataException {
         //given
         List<Employee> forthEmployees = new ArrayList<>();
         forthEmployees.add(new Employee(9, "oocl1", 20, "male", 6000));
