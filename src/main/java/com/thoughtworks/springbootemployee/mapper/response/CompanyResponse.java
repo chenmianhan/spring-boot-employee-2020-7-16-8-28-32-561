@@ -1,25 +1,19 @@
-package com.thoughtworks.springbootemployee.model;
+package com.thoughtworks.springbootemployee.mapper.response;
 
-import javax.persistence.*;
+import com.thoughtworks.springbootemployee.model.Employee;
+
 import java.util.List;
 
-@Entity
-public class Company {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class CompanyResponse {
     private Integer id;
     private String companyName;
     private Integer employeeNumber;
-
-    @OneToMany(targetEntity = Employee.class, cascade = CascadeType.ALL, mappedBy = "companyId")
     private List<Employee> employees;
 
-
-    public Company() {
-
+    public CompanyResponse() {
     }
 
-    public Company(Integer id, String companyName, Integer employeeNumber, List<Employee> employees) {
+    public CompanyResponse(Integer id, String companyName, Integer employeeNumber, List<Employee> employees) {
         this.id = id;
         this.companyName = companyName;
         this.employeeNumber = employeeNumber;
@@ -34,14 +28,6 @@ public class Company {
         this.id = id;
     }
 
-    public List<Employee> getEmployees() {
-        return employees;
-    }
-
-    public void setEmployees(List<Employee> employees) {
-        this.employees = employees;
-    }
-
     public String getCompanyName() {
         return companyName;
     }
@@ -54,7 +40,15 @@ public class Company {
         return employeeNumber;
     }
 
-    public void setEmployeeNumber(int employeeNumber) {
+    public void setEmployeeNumber(Integer employeeNumber) {
         this.employeeNumber = employeeNumber;
+    }
+
+    public List<Employee> getEmployees() {
+        return employees;
+    }
+
+    public void setEmployees(List<Employee> employees) {
+        this.employees = employees;
     }
 }

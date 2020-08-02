@@ -2,49 +2,82 @@ package com.thoughtworks.springbootemployee.service;
 
 import com.thoughtworks.springbootemployee.exception.IllegalOperationException;
 import com.thoughtworks.springbootemployee.exception.NoSuchDataException;
+import com.thoughtworks.springbootemployee.mapper.CompanyMapper;
+import com.thoughtworks.springbootemployee.mapper.EmployeeMapper;
+import com.thoughtworks.springbootemployee.mapper.response.CompanyResponse;
+import com.thoughtworks.springbootemployee.mapper.response.EmployeeResponse;
 import com.thoughtworks.springbootemployee.model.Company;
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.repository.CompanyRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class CompanyService {
     private final CompanyRepository companyRepository;
-    public CompanyService(CompanyRepository companyRepository) {
-        this.companyRepository=companyRepository;
+    @Autowired
+    private final CompanyMapper companyMapper;
+    @Autowired
+    private final EmployeeMapper employeeMapper;
+
+    public CompanyService(CompanyRepository companyRepository, CompanyMapper companyMapper, EmployeeMapper employeeMapper) {
+        this.companyRepository = companyRepository;
+        this.companyMapper = companyMapper;
+        this.employeeMapper = employeeMapper;
     }
 
-    public List<Company> findAll() {
-        return companyRepository.findAll();
+    public List<CompanyResponse> findAll() {
+        List<Company> companies = companyRepository.findAll();
+        List<CompanyResponse> companyResponses = new LinkedList<>();
+        for (Company company : companies) {
+            companyResponses.add(companyMapper.CompanyToCompanyResponse(company));
+        }
+        return companyResponses;
     }
 
-    public Company findById(int id) throws NoSuchDataException {
+    public CompanyResponse findById(int id) throws NoSuchDataException {
         Optional<Company> companyOptional = companyRepository.findById(id);
         if (!companyOptional.isPresent())
             throw new NoSuchDataException("No such id company");
-        return companyRepository.findById(id).orElse(null);
-    }
-
-    public List<Employee> getEmployeesByCompanyId(int id) {
         Company company = companyRepository.findById(id).orElse(null);
-        if(company==null)return null;
-        return company.getEmployees();
+        return companyMapper.CompanyToCompanyResponse(company);
     }
 
-    public Page<Company> findAll(int page, int pageSize) {
-        return companyRepository.findAll(PageRequest.of(page - 1, pageSize));
+    public List<EmployeeResponse> getEmployeesByCompanyId(int id) {
+        Company company = companyRepository.findById(id).orElse(null);
+        if (company == null) return null;
+        List<Employee> employees = company.getEmployees();
+        List<EmployeeResponse> employeeResponses = new ArrayList<>();
+        for (Employee employee : employees) {
+            employeeResponses.add(employeeMapper.EmployeeToEmployeeResponse(employee));
+        }
+        return employeeResponses;
     }
 
-    public Company save(Company newCompany) {
-        return companyRepository.save(newCompany);
+    public Page<CompanyResponse> findAll(int page, int pageSize) {
+        Page<Company> companyPage = companyRepository.findAll(PageRequest.of(page - 1, pageSize));
+        List<Company> companies = companyPage.getContent();
+        List<CompanyResponse> companyResponses = new LinkedList<>();
+        for (Company company : companies) {
+            companyResponses.add(companyMapper.CompanyToCompanyResponse(company));
+        }
+        return new PageImpl<>(companyResponses);
     }
 
-    public Company updateEmployee(int id, Company newCompany) throws IllegalOperationException, NoSuchDataException {
+    public CompanyResponse save(Company newCompany) {
+        Company company = companyRepository.save(newCompany);
+        return companyMapper.CompanyToCompanyResponse(company);
+    }
+
+    public CompanyResponse updateEmployee(int id, Company newCompany) throws IllegalOperationException, NoSuchDataException {
         if (id != newCompany.getId()) throw new IllegalOperationException("id is not corresponding");
         Company company = companyRepository.findById(id).orElse(null);
         if (company == null) throw new NoSuchDataException("No such id company");
@@ -52,7 +85,7 @@ public class CompanyService {
         if (newCompany.getCompanyName() != null) company.setCompanyName(newCompany.getCompanyName());
         if (newCompany.getEmployeeNumber() != null) company.setEmployeeNumber(newCompany.getEmployeeNumber());
         companyRepository.save(company);
-        return company;
+        return companyMapper.CompanyToCompanyResponse(company);
     }
 
     public void deleteById(int id) throws NoSuchDataException {

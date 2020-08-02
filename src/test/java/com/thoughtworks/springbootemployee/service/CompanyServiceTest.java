@@ -2,12 +2,17 @@ package com.thoughtworks.springbootemployee.service;
 
 import com.thoughtworks.springbootemployee.exception.IllegalOperationException;
 import com.thoughtworks.springbootemployee.exception.NoSuchDataException;
+import com.thoughtworks.springbootemployee.mapper.CompanyMapper;
+import com.thoughtworks.springbootemployee.mapper.EmployeeMapper;
+import com.thoughtworks.springbootemployee.mapper.response.CompanyResponse;
+import com.thoughtworks.springbootemployee.mapper.response.EmployeeResponse;
 import com.thoughtworks.springbootemployee.model.Company;
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.repository.CompanyRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 
@@ -23,11 +28,18 @@ import static org.mockito.Mockito.when;
 public class CompanyServiceTest {
     private CompanyRepository mockedCompanyRepository;
     private CompanyService companyService;
+    @Autowired
+    private CompanyMapper companyMapper;
+    @Autowired
+    private EmployeeMapper employeeMapper;
+
 
     @BeforeEach
     void init() {
+        this.companyMapper = new CompanyMapper();
+        this.employeeMapper = new EmployeeMapper();
         mockedCompanyRepository = Mockito.mock(CompanyRepository.class);
-        companyService = new CompanyService(mockedCompanyRepository);
+        companyService = new CompanyService(mockedCompanyRepository, companyMapper, employeeMapper);
     }
 
 
@@ -49,7 +61,7 @@ public class CompanyServiceTest {
         when(mockedCompanyRepository.findAll()).thenReturn(companies);
 
         //when
-        List<Company> foundCompanies = companyService.findAll();
+        List<CompanyResponse> foundCompanies = companyService.findAll();
 
         //then
         assertEquals(3, foundCompanies.size());
@@ -65,11 +77,11 @@ public class CompanyServiceTest {
         given(mockedCompanyRepository.findById(id)).willReturn(java.util.Optional.of(mockedCompany));
 
         //when
-        Company company = companyService.findById(id);
+        CompanyResponse companyResponse = companyService.findById(id);
 
         //then
-        assertEquals("baidu", company.getCompanyName());
-        assertEquals(1, company.getId());
+        assertEquals("baidu", companyResponse.getCompanyName());
+        assertEquals(1, companyResponse.getId());
 
     }
 
@@ -86,12 +98,12 @@ public class CompanyServiceTest {
         when(mockedCompanyRepository.findById(id)).thenReturn(java.util.Optional.of(mockedCompany));
 
         //when
-        List<Employee> employees = companyService.getEmployeesByCompanyId(id);
+        List<EmployeeResponse> employeeResponses = companyService.getEmployeesByCompanyId(id);
 
         //then
-        assertEquals(3, employees.get(0).getId());
-        assertEquals(4, employees.get(1).getId());
-        assertEquals(5, employees.get(2).getId());
+        assertEquals(3, employeeResponses.get(0).getId());
+        assertEquals(4, employeeResponses.get(1).getId());
+        assertEquals(5, employeeResponses.get(2).getId());
     }
 
     @Test
@@ -113,11 +125,11 @@ public class CompanyServiceTest {
                 .willReturn(new PageImpl<>(mockedCompanies));
 
         //when
-        List<Company> resultCompanies = companyService.findAll(page, pageSize).getContent();
+        List<CompanyResponse> companyResponsess = companyService.findAll(page, pageSize).getContent();
 
         //then
-        assertEquals(2, resultCompanies.get(0).getId());
-        assertEquals(3, resultCompanies.get(1).getId());
+        assertEquals(2, companyResponsess.get(0).getId());
+        assertEquals(3, companyResponsess.get(1).getId());
     }
     @Test
     void should_return_insert_company_when_insert_company_given_a_new_company() {
@@ -131,11 +143,11 @@ public class CompanyServiceTest {
         when(mockedCompanyRepository.save(newCompany)).thenReturn(mockedCompany);
 
         //when
-        Company returnCompany = companyService.save(newCompany);
+        CompanyResponse companyResponse = companyService.save(newCompany);
 
         //then
-        assertEquals(mockedCompany.getCompanyName(), returnCompany.getCompanyName());
-        assertEquals(4, returnCompany.getId());
+        assertEquals(mockedCompany.getCompanyName(), companyResponse.getCompanyName());
+        assertEquals(4, companyResponse.getId());
     }
 
     @Test
@@ -147,12 +159,12 @@ public class CompanyServiceTest {
         when(mockedCompanyRepository.save(mockedCompany)).thenReturn(mockedCompany);
 
         //when
-        Company newCompany = companyService.updateEmployee(id, mockedCompany);
+        CompanyResponse companyResponse = companyService.updateEmployee(id, mockedCompany);
 
         //then
-        assertEquals(mockedCompany.getId(), newCompany.getId());
-        assertEquals(mockedCompany.getCompanyName(), newCompany.getCompanyName());
-        assertEquals(mockedCompany.getEmployeeNumber(), newCompany.getEmployeeNumber());
+        assertEquals(mockedCompany.getId(), companyResponse.getId());
+        assertEquals(mockedCompany.getCompanyName(), companyResponse.getCompanyName());
+        assertEquals(mockedCompany.getEmployeeNumber(), companyResponse.getEmployeeNumber());
     }
 
     @Test
