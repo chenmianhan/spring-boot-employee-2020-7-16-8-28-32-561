@@ -139,7 +139,7 @@ public class CompanyServiceTest {
     }
 
     @Test
-    void should_return_updated_company_when_update_company_give_company_id_and_target_company() {
+    void should_return_updated_company_when_update_company_give_company_id_and_target_company() throws IllegalOperationException {
         //given
         int id = 1;
         Company mockedCompany = new Company(1, "TW", 2, null);
