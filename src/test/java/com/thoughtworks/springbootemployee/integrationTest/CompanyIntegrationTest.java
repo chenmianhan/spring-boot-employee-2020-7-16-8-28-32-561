@@ -170,13 +170,6 @@ public class CompanyIntegrationTest {
         //given
         Company company = new Company(null, "SCUT", 20, null);
         company = companyRepository.save(company);
-        String companyInfo = "{\n" +
-                "    \"id\":" + company.getId() + ",\n" +
-                "\"companyName\":\"TW\",\n" +
-                "\"employeeNumber\":2,\n" +
-                "\"employees\":null\n" +
-                "\n" +
-                "}";
         //when
         mockMvc.perform(delete(("/companies/" + company.getId())))
                 .andExpect(status().isAccepted());
@@ -231,6 +224,16 @@ public class CompanyIntegrationTest {
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$").value("No such id company"));
 
+        //then
+    }
+
+    @Test
+    void should_return_status_not_found_and_message_no_such_id_company_when_delete_company_given_not_exist_id() throws Exception {
+        //given
+        int id = 1;
+        //when
+        mockMvc.perform(delete(("/companies/" + 1)))
+                .andExpect(status().isNotFound());
         //then
     }
 }
