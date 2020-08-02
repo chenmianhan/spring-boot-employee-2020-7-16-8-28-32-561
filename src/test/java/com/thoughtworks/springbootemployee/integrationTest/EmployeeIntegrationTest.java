@@ -241,7 +241,8 @@ public class EmployeeIntegrationTest {
 
         //when
         mockMvc.perform(get("/employees/" + 100))
-                .andExpect(status().isNotFound());
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$").value("No such id employee"));
 
         //then
     }
