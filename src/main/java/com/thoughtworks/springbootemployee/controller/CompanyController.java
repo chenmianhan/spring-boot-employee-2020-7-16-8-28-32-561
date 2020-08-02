@@ -35,7 +35,7 @@ public class CompanyController {
     }
 
     @GetMapping
-    @ResponseStatus(HttpStatus.ACCEPTED)
+    @ResponseStatus(HttpStatus.OK)
     public List<Company> getAllCompanies() {
         return companyService.findAll();
     }
