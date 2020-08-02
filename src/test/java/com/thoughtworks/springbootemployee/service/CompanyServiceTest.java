@@ -189,12 +189,26 @@ public class CompanyServiceTest {
     void should_throw_illegal_operation_exception_when_update_companies_given_illegal_id_4_and_employee_id_0() {
         //given
         int illegalId = 4;
-        Company mockedCompany = new Company(0, "TW", 2, null);
+        Company newCompany = new Company(0, "TW", 2, null);
         when(mockedCompanyRepository.findById(illegalId)).thenReturn(Optional.empty());
         //when
-        Exception exception = assertThrows(IllegalOperationException.class, () -> companyService.updateEmployee(illegalId, mockedCompany));
+        Exception exception = assertThrows(IllegalOperationException.class, () -> companyService.updateEmployee(illegalId, newCompany));
 
         //then
         assertEquals(IllegalOperationException.class, exception.getClass());
+    }
+
+    @Test
+    void should_throw_no_such_data_exception_when_update_company_given_not_exist_id() {
+        //given
+        int id = 0;
+        Company newCompany = new Company(0, "TW", 2, null);
+        given(mockedCompanyRepository.findById(id)).willReturn(Optional.empty());
+
+        //when
+        Exception exception = assertThrows(NoSuchDataException.class, () -> companyService.updateEmployee(id, newCompany));
+
+        //then
+        assertEquals(NoSuchDataException.class, exception.getClass());
     }
 }
