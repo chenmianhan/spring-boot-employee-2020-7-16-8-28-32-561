@@ -17,8 +17,7 @@ import java.util.List;
 
 import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.hasSize;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -140,6 +139,27 @@ public class CompanyIntegrationTest {
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id").isNumber())
                 .andExpect(jsonPath("$.companyName").value("scut"))
+                .andExpect(jsonPath("$.employeeNumber").value(2));
+        //then
+    }
+
+    @Test
+    void should_get_updated_company_when_hit_put_employee_endpoint_given_id_and_employee_info() throws Exception {
+        //given
+        Company company = new Company(null, "SCUT", 20, null);
+        company = companyRepository.save(company);
+        String companyInfo = "{\n" +
+                "    \"id\":" + company.getId() + ",\n" +
+                "\"companyName\":\"TW\",\n" +
+                "\"employeeNumber\":2,\n" +
+                "\"employees\":null\n" +
+                "\n" +
+                "}";
+        //when
+        mockMvc.perform(put(("/companies/" + company.getId())).contentType(MediaType.APPLICATION_JSON).content(companyInfo))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.id").isNumber())
+                .andExpect(jsonPath("$.companyName").value("TW"))
                 .andExpect(jsonPath("$.employeeNumber").value(2));
         //then
     }
