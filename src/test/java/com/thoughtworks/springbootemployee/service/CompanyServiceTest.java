@@ -211,4 +211,19 @@ public class CompanyServiceTest {
         //then
         assertEquals(NoSuchDataException.class, exception.getClass());
     }
+
+    @Test
+    void should_throw_no_such_data_exception_when_delete_company_given_not_exist_id() {
+        //given
+        int id = 5;
+        Employee newEmployee = new Employee(5, "Gavin", 20, "male", 9000);
+        given(mockedCompanyRepository.findById(id)).willReturn(Optional.empty());
+
+        //when
+        Exception exception = assertThrows(NoSuchDataException.class, () -> companyService.deleteById(id));
+
+        //then
+        assertEquals(NoSuchDataException.class, exception.getClass());
+
+    }
 }
