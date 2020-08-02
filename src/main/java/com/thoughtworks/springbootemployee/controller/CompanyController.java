@@ -28,7 +28,7 @@ public class CompanyController {
         return companyService.save(company);
     }
     @GetMapping(params = {"page", "pageSize"})
-    @ResponseStatus(HttpStatus.ACCEPTED)
+    @ResponseStatus(HttpStatus.OK)
     public Page<Company> getCompaniesByPageAndPageSize(int page, int pageSize) {
 
         return companyService.findAll(page-1,pageSize);
@@ -41,13 +41,13 @@ public class CompanyController {
     }
 
     @GetMapping("/{id}")
-    @ResponseStatus(HttpStatus.ACCEPTED)
+    @ResponseStatus(HttpStatus.OK)
     public Company getCompanyById(@PathVariable int id) throws NoSuchDataException {
         return companyService.findById(id);
     }
 
     @GetMapping("/{id}/employees")
-    @ResponseStatus(HttpStatus.ACCEPTED)
+    @ResponseStatus(HttpStatus.OK)
     public List<Employee> getEmployeesByCompanyId(@PathVariable int id) {
         return companyService.getEmployeesByCompanyId(id);
     }
