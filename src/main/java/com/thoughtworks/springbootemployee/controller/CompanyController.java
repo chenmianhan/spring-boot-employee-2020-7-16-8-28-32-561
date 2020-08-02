@@ -31,7 +31,7 @@ public class CompanyController {
     @ResponseStatus(HttpStatus.OK)
     public Page<Company> getCompaniesByPageAndPageSize(int page, int pageSize) {
 
-        return companyService.findAll(page-1,pageSize);
+        return companyService.findAll(page, pageSize);
     }
 
     @GetMapping
