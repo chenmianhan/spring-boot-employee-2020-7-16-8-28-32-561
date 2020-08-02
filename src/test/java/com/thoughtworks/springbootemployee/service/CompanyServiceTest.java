@@ -1,5 +1,6 @@
 package com.thoughtworks.springbootemployee.service;
 
+import com.thoughtworks.springbootemployee.exception.NoSuchDataException;
 import com.thoughtworks.springbootemployee.model.Company;
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.repository.CompanyRepository;
@@ -11,8 +12,10 @@ import org.springframework.data.domain.PageRequest;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.when;
 
@@ -185,5 +188,18 @@ public class CompanyServiceTest {
         //then
         Mockito.verify(mockedCompanyRepository).deleteById(id);
 
+    }
+
+    @Test
+    void should_throw_no_such_data_exception_when_find_by_id_given_not_exist_id() {
+        //given
+        int notExistId = 3;
+        given(mockedCompanyRepository.findById(notExistId)).willReturn(Optional.empty());
+
+        // when
+        Exception exception = assertThrows(NoSuchDataException.class, () -> companyService.findById(notExistId));
+
+        //then
+        assertEquals(NoSuchDataException.class, exception.getClass());
     }
 }
