@@ -179,7 +179,20 @@ public class CompanyIntegrationTest {
         //when
         mockMvc.perform(delete(("/companies/" + company.getId())))
                 .andExpect(status().isAccepted());
+        //then
+    }
+
+    @Test
+    void should_return_status_not_found_and_message_no_such_id_company_when_when_hit_get_company_by_id_endpoint_given_not_exist_id() throws Exception {
+        //given
+        int id = 100;
+
+        //when
+        mockMvc.perform(get("/companies/" + 100))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$").value("No such id company"));
 
         //then
     }
+
 }
