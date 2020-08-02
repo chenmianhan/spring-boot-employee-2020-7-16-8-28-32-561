@@ -13,6 +13,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static org.hamcrest.Matchers.empty;
@@ -191,6 +192,25 @@ public class CompanyIntegrationTest {
         mockMvc.perform(get("/companies/" + 100))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$").value("No such id company"));
+
+        //then
+    }
+
+    @Test
+    void should_return_status_forbidden_and_message_id_is_not_corresponding_when_hit_put_company_endpoint_given_company_0_and_illegal_id_4() throws Exception {
+        //given
+        Company company = new Company(0, "alibaba", 200, Collections.emptyList());
+        String companyInfo = "{\n" +
+                "    \"id\":" + company.getId() + ",\n" +
+                "\"companyName\":\"alibaba\",\n" +
+                "\"employeeNumber\":200,\n" +
+                "\"employees\":null\n" +
+                "\n" +
+                "}";
+        //when
+        mockMvc.perform(put(("/companies/" + 4)).contentType(MediaType.APPLICATION_JSON).content(companyInfo))
+                .andExpect(status().isForbidden())
+                .andExpect(jsonPath("$").value("id is not corresponding"));
 
         //then
     }

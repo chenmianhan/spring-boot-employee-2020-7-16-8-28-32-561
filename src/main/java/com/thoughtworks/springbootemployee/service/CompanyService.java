@@ -45,7 +45,7 @@ public class CompanyService {
     }
 
     public Company updateEmployee(int id, Company newCompany) throws IllegalOperationException, NoSuchDataException {
-        if (id != newCompany.getId()) throw new IllegalOperationException("id is not correspond");
+        if (id != newCompany.getId()) throw new IllegalOperationException("id is not corresponding");
         Company company = companyRepository.findById(id).orElse(null);
         if (company == null) throw new NoSuchDataException("No such id company");
 
