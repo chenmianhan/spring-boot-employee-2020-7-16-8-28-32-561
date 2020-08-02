@@ -215,4 +215,22 @@ public class CompanyIntegrationTest {
         //then
     }
 
+    @Test
+    void should_return_status_not_found_and_message_no_such_id_company_when_hit_put_company_endpoint_given_not_exist_id() throws Exception {
+        //given
+        Company company = new Company(0, "alibaba", 200, Collections.emptyList());
+        String companyInfo = "{\n" +
+                "    \"id\":" + company.getId() + ",\n" +
+                "\"companyName\":\"alibaba\",\n" +
+                "\"employeeNumber\":200,\n" +
+                "\"employees\":null\n" +
+                "\n" +
+                "}";
+        //when
+        mockMvc.perform(put(("/companies/" + 0)).contentType(MediaType.APPLICATION_JSON).content(companyInfo))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$").value("No such id company"));
+
+        //then
+    }
 }
