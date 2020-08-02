@@ -235,7 +235,7 @@ public class EmployeeIntegrationTest {
     }
 
     @Test
-    void should_return_status_not_found_and_message_No_such_id_employee_when_when_hit_get_employee_by_id_endpoint_given_not_exist_id() throws Exception {
+    void should_return_status_not_found_and_message_no_such_id_employee_when_when_hit_get_employee_by_id_endpoint_given_not_exist_id() throws Exception {
         //given
         int id = 100;
 
@@ -246,4 +246,28 @@ public class EmployeeIntegrationTest {
 
         //then
     }
+
+    @Test
+    void should_return_status_forbidden_and_message_id_is_not_corresponding_when_hit_put_employee_endpoint_given_employee_0_and_illegal_id_4() throws Exception {
+        //given
+        Company company = new Company(null, "alibaba", 200, Collections.emptyList());
+        company = companyRepository.save(company);
+        Employee employee = new Employee(null, "XiaoMing", 19, "female", 1000, company.getId());
+        employee = employeeRepository.save(employee);
+        String employeeInfo = "{\n" +
+                "    \"id\":" + employee.getId() + ",\n" +
+                "    \"name\":\"Xiaoming\",\n" +
+                "    \"age\":20,\n" +
+                "    \"gender\":\"male\",\n" +
+                "    \"salary\":10000,\n" +
+                "    \"companyId\":" + company.getId() + "\n" +
+                "}";
+        //when
+        mockMvc.perform(put(("/employees/" + employee.getId() + 1)).contentType(MediaType.APPLICATION_JSON).content(employeeInfo))
+                .andExpect(status().isForbidden())
+                .andExpect(jsonPath("$").value("id is not corresponding"));
+
+        //then
+    }
+
 }
