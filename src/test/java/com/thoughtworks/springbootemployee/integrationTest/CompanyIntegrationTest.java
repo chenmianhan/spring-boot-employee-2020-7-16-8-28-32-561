@@ -101,22 +101,14 @@ public class CompanyIntegrationTest {
         //given
         int page = 2;
         int pageSize = 2;
-        //TODO 删除无用数据
         Company firstCompany = new Company(null, "alibaba", 3, null);
         companyRepository.save(firstCompany);
-
         Company secondCompany = new Company(null, "baidu", 1, null);
         companyRepository.save(secondCompany);
-
         Company thirdCompany = new Company(null, "tencent", 1, null);
         thirdCompany = companyRepository.save(thirdCompany);
-        Employee thirdEmployee = new Employee(6, "tencent1", 20, "male", 6000, thirdCompany.getId());
-        employeeRepository.save(thirdEmployee);
-
         Company forthCompany = new Company(null, "oocl", 1, null);
         forthCompany = companyRepository.save(forthCompany);
-        Employee forthEmployee = new Employee(9, "oocl1", 20, "male", 6000, null);
-        employeeRepository.save(forthEmployee);
 
         //when
         mockMvc.perform(get(String.format("/companies?page=%s&&pageSize=%s", page, pageSize)))
