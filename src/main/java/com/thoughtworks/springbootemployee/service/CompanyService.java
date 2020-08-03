@@ -99,10 +99,15 @@ public class CompanyService {
     public void deleteById(int id) throws NoSuchDataException {
 
         Optional<Company> companyOptional = companyRepository.findById(id);
+        List<Employee> employees;
         if (!companyOptional.isPresent())
             throw new NoSuchDataException("No such id company");
-        //TODO 删除employees
+        else employees = companyOptional.get().getEmployees();
         companyRepository.deleteById(id);
+        if (employees != null)
+            for (Employee employee : employees) {
+                employeeRepository.delete(employee);
+            }
 
     }
 }
