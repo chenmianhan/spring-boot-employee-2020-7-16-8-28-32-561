@@ -59,15 +59,15 @@ public class EmployeeController {
     }
 
 
-    @PutMapping("/{id}")
-    @ResponseStatus(HttpStatus.CREATED)
+    @PatchMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
     public EmployeeResponse updateEmployee(@PathVariable int id, @RequestBody EmployeeRequest employeeRequest) throws NoSuchDataException, IllegalOperationException {
         Employee employee = employeeMapper.EmployeeRequestToEmployee(employeeRequest);
         return employeeService.updateEmployee(id, employee);
     }
 
     @DeleteMapping("/{id}")
-    @ResponseStatus(HttpStatus.ACCEPTED)
+    @ResponseStatus(HttpStatus.OK)
     public void deleteEmployee(@PathVariable int id) throws NoSuchDataException {
         employeeService.deleteById(id);
     }

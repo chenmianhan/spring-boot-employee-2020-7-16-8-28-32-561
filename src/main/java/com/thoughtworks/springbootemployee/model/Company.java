@@ -5,6 +5,7 @@ import java.util.List;
 
 @Entity
 public class Company {
+    //TODO  删除number属性
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;

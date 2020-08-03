@@ -207,8 +207,8 @@ public class EmployeeIntegrationTest {
                 "    \"companyId\":" + company.getId() + "\n" +
                 "}";
         //when
-        mockMvc.perform(put(("/employees/" + employee.getId())).contentType(MediaType.APPLICATION_JSON).content(employeeInfo))
-                .andExpect(status().isCreated())
+        mockMvc.perform(patch(("/employees/" + employee.getId())).contentType(MediaType.APPLICATION_JSON).content(employeeInfo))
+                .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").isNumber())
                 .andExpect(jsonPath("$.name").value("Xiaoming"))
                 .andExpect(jsonPath("$.age").value(20))
@@ -229,7 +229,7 @@ public class EmployeeIntegrationTest {
         employee = employeeRepository.save(employee);
         //when
         mockMvc.perform(delete(("/employees/" + employee.getId())))
-                .andExpect(status().isAccepted());
+                .andExpect(status().isOk());
 
         //then
     }
@@ -263,7 +263,7 @@ public class EmployeeIntegrationTest {
                 "    \"companyId\":" + company.getId() + "\n" +
                 "}";
         //when
-        mockMvc.perform(put(("/employees/" + employee.getId() + 1)).contentType(MediaType.APPLICATION_JSON).content(employeeInfo))
+        mockMvc.perform(patch(("/employees/" + employee.getId() + 1)).contentType(MediaType.APPLICATION_JSON).content(employeeInfo))
                 .andExpect(status().isForbidden())
                 .andExpect(jsonPath("$").value("id is not corresponding"));
 
@@ -286,7 +286,7 @@ public class EmployeeIntegrationTest {
                 "    \"companyId\":" + company.getId() + "\n" +
                 "}";
         //when
-        mockMvc.perform(put(("/employees/" + employee.getId() + 1)).contentType(MediaType.APPLICATION_JSON).content(employeeInfo))
+        mockMvc.perform(patch(("/employees/" + employee.getId() + 1)).contentType(MediaType.APPLICATION_JSON).content(employeeInfo))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$").value("No such id employee"));
 
@@ -302,7 +302,7 @@ public class EmployeeIntegrationTest {
         employee = employeeRepository.save(employee);
         //when
         mockMvc.perform(delete(("/employees/" + employee.getId())))
-                .andExpect(status().isAccepted());
+                .andExpect(status().isOk());
 
         //then
     }

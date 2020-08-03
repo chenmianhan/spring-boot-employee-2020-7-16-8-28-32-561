@@ -60,9 +60,8 @@ public class CompanyController {
         return companyService.getEmployeesByCompanyId(id);
     }
 
-
-    @PutMapping("/{id}")
-    @ResponseStatus(HttpStatus.CREATED)
+    @PatchMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
     public CompanyResponse updateCompany(@PathVariable int id, @RequestBody CompanyRequest newCompanyRequest) throws IllegalOperationException, NoSuchDataException {
 
         Company newCompany = companyMapper.CompanyRequestToCompany(newCompanyRequest);
@@ -70,7 +69,7 @@ public class CompanyController {
     }
 
     @DeleteMapping("/{id}")
-    @ResponseStatus(HttpStatus.ACCEPTED)
+    @ResponseStatus(HttpStatus.OK)
     public void deleteAllEmployeesByCompanyId(@PathVariable int id) throws NoSuchDataException {
 
         companyService.deleteById(id);

@@ -101,6 +101,7 @@ public class CompanyIntegrationTest {
         //given
         int page = 2;
         int pageSize = 2;
+        //TODO 删除无用数据
         Company firstCompany = new Company(null, "alibaba", 3, null);
         companyRepository.save(firstCompany);
 
@@ -157,8 +158,8 @@ public class CompanyIntegrationTest {
                 "\n" +
                 "}";
         //when
-        mockMvc.perform(put(("/companies/" + company.getId())).contentType(MediaType.APPLICATION_JSON).content(companyInfo))
-                .andExpect(status().isCreated())
+        mockMvc.perform(patch(("/companies/" + company.getId())).contentType(MediaType.APPLICATION_JSON).content(companyInfo))
+                .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").isNumber())
                 .andExpect(jsonPath("$.companyName").value("TW"))
                 .andExpect(jsonPath("$.employeeNumber").value(2));
@@ -172,7 +173,7 @@ public class CompanyIntegrationTest {
         company = companyRepository.save(company);
         //when
         mockMvc.perform(delete(("/companies/" + company.getId())))
-                .andExpect(status().isAccepted());
+                .andExpect(status().isOk());
         //then
     }
 
@@ -201,7 +202,7 @@ public class CompanyIntegrationTest {
                 "\n" +
                 "}";
         //when
-        mockMvc.perform(put(("/companies/" + 4)).contentType(MediaType.APPLICATION_JSON).content(companyInfo))
+        mockMvc.perform(patch(("/companies/" + 4)).contentType(MediaType.APPLICATION_JSON).content(companyInfo))
                 .andExpect(status().isForbidden())
                 .andExpect(jsonPath("$").value("id is not corresponding"));
 
@@ -220,7 +221,7 @@ public class CompanyIntegrationTest {
                 "\n" +
                 "}";
         //when
-        mockMvc.perform(put(("/companies/" + 0)).contentType(MediaType.APPLICATION_JSON).content(companyInfo))
+        mockMvc.perform(patch(("/companies/" + 0)).contentType(MediaType.APPLICATION_JSON).content(companyInfo))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$").value("No such id company"));
 

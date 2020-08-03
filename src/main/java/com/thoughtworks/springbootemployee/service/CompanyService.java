@@ -89,10 +89,11 @@ public class CompanyService {
     }
 
     public void deleteById(int id) throws NoSuchDataException {
-        //TODO
+
         Optional<Company> companyOptional = companyRepository.findById(id);
         if (!companyOptional.isPresent())
             throw new NoSuchDataException("No such id company");
+        //TODO 删除employees
         companyRepository.deleteById(id);
 
     }
