@@ -83,6 +83,7 @@ public class EmployeeService {
             oldEmployee.setAge(newEmployee.getAge());
         if (newEmployee.getSalary() != null)
             oldEmployee.setSalary(newEmployee.getSalary());
+        ///TODO 不建议直接赋值
         oldEmployee = employeeRepository.save(oldEmployee);
         return employeeMapper.EmployeeToEmployeeResponse(oldEmployee);
     }

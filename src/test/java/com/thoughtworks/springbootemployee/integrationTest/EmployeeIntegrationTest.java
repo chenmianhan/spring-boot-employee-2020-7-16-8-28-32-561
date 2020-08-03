@@ -38,7 +38,7 @@ public class EmployeeIntegrationTest {
     @Test
     void should_get_employee_when_hit_get_employees_endpoint_given_nothing() throws Exception {
         //given
-        Company company = new Company(null, "alibaba", 200, Collections.emptyList());
+        Company company = new Company(null, "alibaba", Collections.emptyList());
         company = companyRepository.save(company);
         Employee employee = new Employee(null, "alibaba1", 18, "male", 1000, company.getId());
         employee = employeeRepository.save(employee);
@@ -61,7 +61,7 @@ public class EmployeeIntegrationTest {
     @Test
     void should_get_employee_when_hit_get_employee_by_id_endpoint_given_id() throws Exception {
         //given
-        Company company = new Company(null, "alibaba", 200, Collections.emptyList());
+        Company company = new Company(null, "alibaba", Collections.emptyList());
         company = companyRepository.save(company);
         Employee firstEmployee = new Employee(null, "ali1", 18, "male", 2000, company.getId());
         Employee secondEmployee = new Employee(null, "ali2", 20, "female", 2000, company.getId());
@@ -85,7 +85,7 @@ public class EmployeeIntegrationTest {
     @Test
     void should_get_the_third_and_forth_employees_when_hit_get_employee_specified_page_and_pageSize_endpoint_given_page_2_and_pageSize_2() throws Exception {
         //given
-        Company company = new Company(null, "alibaba", 200, Collections.emptyList());
+        Company company = new Company(null, "alibaba", Collections.emptyList());
         company = companyRepository.save(company);
         Employee firstEmployee = new Employee(null, "ali1", 18, "male", 2000, company.getId());
         Employee secondEmployee = new Employee(null, "ali2", 20, "female", 2000, company.getId());
@@ -127,7 +127,7 @@ public class EmployeeIntegrationTest {
     @Test
     void should_get_employees_when_hit_get_employee_by_gender_given_gender_male() throws Exception {
         //given
-        Company company = new Company(null, "alibaba", 200, Collections.emptyList());
+        Company company = new Company(null, "alibaba", Collections.emptyList());
         company = companyRepository.save(company);
         Employee firstEmployee = new Employee(null, "ali1", 18, "male", 2000, company.getId());
         Employee secondEmployee = new Employee(null, "ali2", 20, "female", 2000, company.getId());
@@ -168,7 +168,7 @@ public class EmployeeIntegrationTest {
     @Test
     void should_add_employee_when_hit_post_employees_endpoints_given_employee_info() throws Exception {
         //given
-        Company company = new Company(null, "alibaba", 200, Collections.emptyList());
+        Company company = new Company(null, "alibaba", Collections.emptyList());
         company = companyRepository.save(company);
         String employeeInfo = "{\n" +
                 "    \"name\":\"Xiaoming\",\n" +
@@ -194,7 +194,7 @@ public class EmployeeIntegrationTest {
     @Test
     void should_get_updated_employee_when_hit_put_employee_endpoint_given_id_and_employee_info() throws Exception {
         //given
-        Company company = new Company(null, "alibaba", 200, Collections.emptyList());
+        Company company = new Company(null, "alibaba", Collections.emptyList());
         company = companyRepository.save(company);
         Employee employee = new Employee(null, "XiaoMing", 19, "female", 1000, company.getId());
         employee = employeeRepository.save(employee);
@@ -223,7 +223,7 @@ public class EmployeeIntegrationTest {
     @Test
     void should_return_status_accepted_when_delete_a_employee_given_id() throws Exception {
         //given
-        Company company = new Company(null, "alibaba", 200, Collections.emptyList());
+        Company company = new Company(null, "alibaba", Collections.emptyList());
         company = companyRepository.save(company);
         Employee employee = new Employee(null, "XiaoMing", 19, "female", 1000, company.getId());
         employee = employeeRepository.save(employee);
@@ -250,7 +250,7 @@ public class EmployeeIntegrationTest {
     @Test
     void should_return_status_forbidden_and_message_id_is_not_corresponding_when_hit_put_employee_endpoint_given_employee_0_and_illegal_id_4() throws Exception {
         //given
-        Company company = new Company(null, "alibaba", 200, Collections.emptyList());
+        Company company = new Company(null, "alibaba", Collections.emptyList());
         company = companyRepository.save(company);
         Employee employee = new Employee(null, "XiaoMing", 19, "female", 1000, company.getId());
         employee = employeeRepository.save(employee);
@@ -273,7 +273,7 @@ public class EmployeeIntegrationTest {
     @Test
     void should_return_status_not_found_and_message_no_such_id_employee_when_hit_put_employee_endpoint_given_not_exist_id() throws Exception {
         //given
-        Company company = new Company(null, "alibaba", 200, Collections.emptyList());
+        Company company = new Company(null, "alibaba", Collections.emptyList());
         company = companyRepository.save(company);
         Employee employee = new Employee(null, "XiaoMing", 19, "female", 1000, company.getId());
         employee = employeeRepository.save(employee);
@@ -296,7 +296,7 @@ public class EmployeeIntegrationTest {
     @Test
     void should_return_status_not_found_and_message_no_such_id_employee_when_delete_employee_given_not_exist_id() throws Exception {
         //given
-        Company company = new Company(null, "alibaba", 200, Collections.emptyList());
+        Company company = new Company(null, "alibaba", Collections.emptyList());
         company = companyRepository.save(company);
         Employee employee = new Employee(null, "XiaoMing", 19, "female", 1000, company.getId());
         employee = employeeRepository.save(employee);

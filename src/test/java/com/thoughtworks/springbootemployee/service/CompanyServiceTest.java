@@ -49,15 +49,15 @@ public class CompanyServiceTest {
         List<Company> companies = new ArrayList<>();
         List<Employee> firstEmployees = new ArrayList<>();
         firstEmployees.add(new Employee(0, "alibaba1", 20, "male", 6000));
-        companies.add(new Company(0, "alibaba", 3, firstEmployees));
+        companies.add(new Company(0, "alibaba", firstEmployees));
 
         List<Employee> secondEmployees = new ArrayList<>();
         secondEmployees.add(new Employee(4, "baidu1", 20, "male", 6000));
-        companies.add(new Company(1, "baidu", 3, secondEmployees));
+        companies.add(new Company(1, "baidu", secondEmployees));
 
         List<Employee> thirdEmployees = new ArrayList<>();
         thirdEmployees.add(new Employee(6, "tencent1", 20, "male", 6000));
-        companies.add(new Company(2, "tencent", 3, thirdEmployees));
+        companies.add(new Company(2, "tencent", thirdEmployees));
         when(mockedCompanyRepository.findAll()).thenReturn(companies);
 
         //when
@@ -72,7 +72,7 @@ public class CompanyServiceTest {
         //given
         List<Employee> secondEmployees = new ArrayList<>();
         secondEmployees.add(new Employee(3, "baidu1", 20, "male", 6000));
-        Company mockedCompany = new Company(1, "baidu", 1, secondEmployees);
+        Company mockedCompany = new Company(1, "baidu", secondEmployees);
         int id = 1;
         given(mockedCompanyRepository.findById(id)).willReturn(java.util.Optional.of(mockedCompany));
 
@@ -93,7 +93,7 @@ public class CompanyServiceTest {
         secondEmployees.add(new Employee(3, "baidu1", 20, "male", 6000));
         secondEmployees.add(new Employee(4, "baidu2", 19, "female", 7000));
         secondEmployees.add(new Employee(5, "baidu3", 19, "male", 8000));
-        Company mockedCompany = new Company(1, "baidu", 1, secondEmployees);
+        Company mockedCompany = new Company(1, "baidu", secondEmployees);
         int id = 1;
         when(mockedCompanyRepository.findById(id)).thenReturn(java.util.Optional.of(mockedCompany));
 
@@ -115,11 +115,11 @@ public class CompanyServiceTest {
         List<Employee> firstEmployees = new ArrayList<>();
         List<Employee> thirdEmployees = new ArrayList<>();
         thirdEmployees.add(new Employee(6, "tencent1", 20, "male", 6000));
-        mockedCompanies.add(new Company(2, "tencent", 1, thirdEmployees));
+        mockedCompanies.add(new Company(2, "tencent", thirdEmployees));
 
         List<Employee> forthEmployees = new ArrayList<>();
         forthEmployees.add(new Employee(9, "oocl1", 20, "male", 6000));
-        mockedCompanies.add(new Company(3, "oocl", 1, forthEmployees));
+        mockedCompanies.add(new Company(3, "oocl", forthEmployees));
 
         given(mockedCompanyRepository.findAll(PageRequest.of(page - 1, pageSize)))
                 .willReturn(new PageImpl<>(mockedCompanies));
@@ -138,8 +138,8 @@ public class CompanyServiceTest {
         List<Employee> newEmployees = new ArrayList<>();
         newEmployees.add(new Employee(12, "SCUT1", 20, "male", 6000));
         newEmployees.add(new Employee(13, "SCUT2", 19, "female", 7000));
-        Company newCompany = new Company(null, "SCUT", 2, newEmployees);
-        Company mockedCompany = new Company(4, "SCUT", 2, newEmployees);
+        Company newCompany = new Company(null, "SCUT", newEmployees);
+        Company mockedCompany = new Company(4, "SCUT", newEmployees);
         when(mockedCompanyRepository.save(newCompany)).thenReturn(mockedCompany);
 
         //when
@@ -154,7 +154,7 @@ public class CompanyServiceTest {
     void should_return_updated_company_when_update_company_give_company_id_and_target_company() throws IllegalOperationException, NoSuchDataException {
         //given
         int id = 1;
-        Company mockedCompany = new Company(1, "TW", 2, null);
+        Company mockedCompany = new Company(1, "TW", null);
         when(mockedCompanyRepository.findById(id)).thenReturn(java.util.Optional.of(mockedCompany));
         when(mockedCompanyRepository.save(mockedCompany)).thenReturn(mockedCompany);
 
@@ -164,7 +164,6 @@ public class CompanyServiceTest {
         //then
         assertEquals(mockedCompany.getId(), companyResponse.getId());
         assertEquals(mockedCompany.getCompanyName(), companyResponse.getCompanyName());
-        assertEquals(mockedCompany.getEmployeeNumber(), companyResponse.getEmployeeNumber());
     }
 
     @Test
@@ -172,7 +171,7 @@ public class CompanyServiceTest {
         //given
         List<Employee> forthEmployees = new ArrayList<>();
         forthEmployees.add(new Employee(9, "oocl1", 20, "male", 6000));
-        Company mockedCompany = new Company(3, "oocl", 1, forthEmployees);
+        Company mockedCompany = new Company(3, "oocl", forthEmployees);
         int id = 3;
         when(mockedCompanyRepository.findById(id)).thenReturn(java.util.Optional.of(mockedCompany));
 
@@ -201,7 +200,7 @@ public class CompanyServiceTest {
     void should_throw_illegal_operation_exception_when_update_companies_given_illegal_id_4_and_employee_id_0() {
         //given
         int illegalId = 4;
-        Company newCompany = new Company(0, "TW", 2, null);
+        Company newCompany = new Company(0, "TW", null);
         when(mockedCompanyRepository.findById(illegalId)).thenReturn(Optional.empty());
         //when
         Exception exception = assertThrows(IllegalOperationException.class, () -> companyService.updateEmployee(illegalId, newCompany));
@@ -214,7 +213,7 @@ public class CompanyServiceTest {
     void should_throw_no_such_data_exception_when_update_company_given_not_exist_id() {
         //given
         int id = 0;
-        Company newCompany = new Company(0, "TW", 2, null);
+        Company newCompany = new Company(0, "TW", null);
         given(mockedCompanyRepository.findById(id)).willReturn(Optional.empty());
 
         //when

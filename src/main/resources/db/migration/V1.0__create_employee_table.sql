@@ -1,8 +1,7 @@
 create table company
 (
 id int   AUTO_INCREMENT  PRIMARY KEY,
-company_name varchar(255),
-employee_number int
+company_name varchar(255)
 );
 create table employee
 (

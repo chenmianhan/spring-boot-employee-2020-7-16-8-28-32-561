@@ -11,7 +11,6 @@ public class CompanyMapper {
         Company company = new Company();
         company.setId(companyRequest.getId());
         company.setCompanyName(companyRequest.getCompanyName());
-        company.setEmployeeNumber(companyRequest.getEmployeeNumber());
         company.setEmployees(companyRequest.getEmployees());
         return company;
     }
@@ -20,7 +19,9 @@ public class CompanyMapper {
         CompanyResponse companyResponse = new CompanyResponse();
         companyResponse.setId(company.getId());
         companyResponse.setCompanyName(company.getCompanyName());
-        companyResponse.setEmployeeNumber(company.getEmployeeNumber());
+        if (company.getEmployees() == null)
+            companyResponse.setEmployeeNumber(0);
+        else companyResponse.setEmployeeNumber(company.getEmployees().size());
         companyResponse.setEmployees(company.getEmployees());
         return companyResponse;
     }

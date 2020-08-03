@@ -41,8 +41,8 @@ public class CompanyIntegrationTest {
     void should_get_companies_when_hit_get_companies_given_nothing() throws Exception {
         //given
         List<Company> companies = new ArrayList<>();
-        companies.add(new Company(null, "huawei", 10, null));
-        companies.add(new Company(null, "alibaba", 10, null));
+        companies.add(new Company(null, "huawei", null));
+        companies.add(new Company(null, "alibaba", null));
         companyRepository.saveAll(companies);
 
         //when
@@ -51,11 +51,11 @@ public class CompanyIntegrationTest {
                 .andExpect(jsonPath("$", hasSize(2)))
                 .andExpect(jsonPath("$[0].id").isNumber())
                 .andExpect(jsonPath("$[0].companyName").value("huawei"))
-                .andExpect(jsonPath("$[0].employeeNumber").value(10))
+                .andExpect(jsonPath("$[0].employeeNumber").value(0))
                 .andExpect(jsonPath("$[0].employees").value(empty()))
                 .andExpect(jsonPath("$[1].id").isNumber())
                 .andExpect(jsonPath("$[1].companyName").value("alibaba"))
-                .andExpect(jsonPath("$[1].employeeNumber").value(10))
+                .andExpect(jsonPath("$[1].employeeNumber").value(0))
                 .andExpect(jsonPath("$[1].employees").value(empty()));
         //then
     }
@@ -63,7 +63,7 @@ public class CompanyIntegrationTest {
     @Test
     void should_get_company_when_hit_get_company_by_id_endpoint_given_id() throws Exception {
         //given
-        Company mockedCompany = new Company(null, "baidu", 1, null);
+        Company mockedCompany = new Company(null, "baidu", null);
         mockedCompany = companyRepository.save(mockedCompany);
 
         //when
@@ -71,7 +71,7 @@ public class CompanyIntegrationTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").isNumber())
                 .andExpect(jsonPath("$.companyName").value(mockedCompany.getCompanyName()))
-                .andExpect(jsonPath("$.employeeNumber").value(mockedCompany.getEmployeeNumber()))
+                .andExpect(jsonPath("$.employeeNumber").value(0))
                 .andExpect(jsonPath("$.employees").value(empty()));
 
         //then
@@ -80,7 +80,7 @@ public class CompanyIntegrationTest {
     @Test
     void should_get_company_employees_when_hit_get_employee_of_company_by_id_endpoint_given_id() throws Exception {
         //given
-        Company company = new Company(null, "oocl", 200, null);
+        Company company = new Company(null, "oocl", null);
         company = companyRepository.save(company);
         Employee employee = new Employee(null, "James", 18, "male", 10000, company.getId());
         employeeRepository.save(employee);
@@ -101,13 +101,13 @@ public class CompanyIntegrationTest {
         //given
         int page = 2;
         int pageSize = 2;
-        Company firstCompany = new Company(null, "alibaba", 3, null);
+        Company firstCompany = new Company(null, "alibaba", null);
         companyRepository.save(firstCompany);
-        Company secondCompany = new Company(null, "baidu", 1, null);
+        Company secondCompany = new Company(null, "baidu", null);
         companyRepository.save(secondCompany);
-        Company thirdCompany = new Company(null, "tencent", 1, null);
+        Company thirdCompany = new Company(null, "tencent", null);
         thirdCompany = companyRepository.save(thirdCompany);
-        Company forthCompany = new Company(null, "oocl", 1, null);
+        Company forthCompany = new Company(null, "oocl", null);
         forthCompany = companyRepository.save(forthCompany);
 
         //when
@@ -124,7 +124,6 @@ public class CompanyIntegrationTest {
         //given
         String companyInfo = "{\n" +
                 "\"companyName\":\"scut\",\n" +
-                "\"employeeNumber\":2,\n" +
                 "\"employees\":null\n" +
                 "\n" +
                 "}";
@@ -133,19 +132,18 @@ public class CompanyIntegrationTest {
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id").isNumber())
                 .andExpect(jsonPath("$.companyName").value("scut"))
-                .andExpect(jsonPath("$.employeeNumber").value(2));
+                .andExpect(jsonPath("$.employeeNumber").value(0));
         //then
     }
 
     @Test
     void should_get_updated_company_when_hit_put_employee_endpoint_given_id_and_employee_info() throws Exception {
         //given
-        Company company = new Company(null, "SCUT", 20, null);
+        Company company = new Company(null, "SCUT", null);
         company = companyRepository.save(company);
         String companyInfo = "{\n" +
                 "    \"id\":" + company.getId() + ",\n" +
                 "\"companyName\":\"TW\",\n" +
-                "\"employeeNumber\":2,\n" +
                 "\"employees\":null\n" +
                 "\n" +
                 "}";
@@ -154,14 +152,14 @@ public class CompanyIntegrationTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").isNumber())
                 .andExpect(jsonPath("$.companyName").value("TW"))
-                .andExpect(jsonPath("$.employeeNumber").value(2));
+                .andExpect(jsonPath("$.employeeNumber").value(0));
         //then
     }
 
     @Test
     void should_return_status_accepted_when_delete_a_company_given_id() throws Exception {
         //given
-        Company company = new Company(null, "SCUT", 20, null);
+        Company company = new Company(null, "SCUT", null);
         company = companyRepository.save(company);
         //when
         mockMvc.perform(delete(("/companies/" + company.getId())))
@@ -185,11 +183,10 @@ public class CompanyIntegrationTest {
     @Test
     void should_return_status_forbidden_and_message_id_is_not_corresponding_when_hit_put_company_endpoint_given_company_0_and_illegal_id_4() throws Exception {
         //given
-        Company company = new Company(0, "alibaba", 200, Collections.emptyList());
+        Company company = new Company(0, "alibaba", Collections.emptyList());
         String companyInfo = "{\n" +
                 "    \"id\":" + company.getId() + ",\n" +
                 "\"companyName\":\"alibaba\",\n" +
-                "\"employeeNumber\":200,\n" +
                 "\"employees\":null\n" +
                 "\n" +
                 "}";
@@ -204,11 +201,10 @@ public class CompanyIntegrationTest {
     @Test
     void should_return_status_not_found_and_message_no_such_id_company_when_hit_put_company_endpoint_given_not_exist_id() throws Exception {
         //given
-        Company company = new Company(0, "alibaba", 200, Collections.emptyList());
+        Company company = new Company(0, "alibaba", Collections.emptyList());
         String companyInfo = "{\n" +
                 "    \"id\":" + company.getId() + ",\n" +
                 "\"companyName\":\"alibaba\",\n" +
-                "\"employeeNumber\":200,\n" +
                 "\"employees\":null\n" +
                 "\n" +
                 "}";

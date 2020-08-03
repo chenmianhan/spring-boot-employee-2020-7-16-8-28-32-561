@@ -7,13 +7,11 @@ import java.util.List;
 public class CompanyRequest {
     private Integer id;
     private String companyName;
-    private Integer employeeNumber;
     private List<Employee> employees;
 
-    public CompanyRequest(Integer id, String companyName, Integer employeeNumber, List<Employee> employees) {
+    public CompanyRequest(Integer id, String companyName, List<Employee> employees) {
         this.id = id;
         this.companyName = companyName;
-        this.employeeNumber = employeeNumber;
         this.employees = employees;
     }
 
@@ -26,10 +24,6 @@ public class CompanyRequest {
 
     public String getCompanyName() {
         return companyName;
-    }
-
-    public Integer getEmployeeNumber() {
-        return employeeNumber;
     }
 
     public List<Employee> getEmployees() {

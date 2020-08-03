@@ -47,7 +47,7 @@ public class CompanyService {
         Optional<Company> companyOptional = companyRepository.findById(id);
         if (!companyOptional.isPresent())
             throw new NoSuchDataException("No such id company");
-        Company company = companyRepository.findById(id).orElse(null);
+        Company company = companyRepository.findById(id).get();
         return companyMapper.CompanyToCompanyResponse(company);
     }
 
@@ -81,9 +81,7 @@ public class CompanyService {
         if (id != newCompany.getId()) throw new IllegalOperationException("id is not corresponding");
         Company company = companyRepository.findById(id).orElse(null);
         if (company == null) throw new NoSuchDataException("No such id company");
-
         if (newCompany.getCompanyName() != null) company.setCompanyName(newCompany.getCompanyName());
-        if (newCompany.getEmployeeNumber() != null) company.setEmployeeNumber(newCompany.getEmployeeNumber());
         companyRepository.save(company);
         return companyMapper.CompanyToCompanyResponse(company);
     }
