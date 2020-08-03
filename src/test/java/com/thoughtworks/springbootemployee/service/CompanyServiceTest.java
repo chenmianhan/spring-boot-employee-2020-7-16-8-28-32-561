@@ -9,6 +9,7 @@ import com.thoughtworks.springbootemployee.mapper.response.EmployeeResponse;
 import com.thoughtworks.springbootemployee.model.Company;
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.repository.CompanyRepository;
+import com.thoughtworks.springbootemployee.repository.EmployeeRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -28,6 +29,7 @@ import static org.mockito.Mockito.when;
 public class CompanyServiceTest {
     private CompanyRepository mockedCompanyRepository;
     private CompanyService companyService;
+    private EmployeeRepository employeeRepository;
     @Autowired
     private CompanyMapper companyMapper;
     @Autowired
@@ -39,7 +41,8 @@ public class CompanyServiceTest {
         this.companyMapper = new CompanyMapper();
         this.employeeMapper = new EmployeeMapper();
         mockedCompanyRepository = Mockito.mock(CompanyRepository.class);
-        companyService = new CompanyService(mockedCompanyRepository, companyMapper, employeeMapper);
+        employeeRepository = Mockito.mock(EmployeeRepository.class);
+        companyService = new CompanyService(mockedCompanyRepository, companyMapper, employeeMapper, employeeRepository);
     }
 
 

@@ -9,6 +9,7 @@ import com.thoughtworks.springbootemployee.mapper.response.EmployeeResponse;
 import com.thoughtworks.springbootemployee.model.Company;
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.repository.CompanyRepository;
+import com.thoughtworks.springbootemployee.repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -27,11 +28,14 @@ public class CompanyService {
     private final CompanyMapper companyMapper;
     @Autowired
     private final EmployeeMapper employeeMapper;
+    @Autowired
+    private final EmployeeRepository employeeRepository;
 
-    public CompanyService(CompanyRepository companyRepository, CompanyMapper companyMapper, EmployeeMapper employeeMapper) {
+    public CompanyService(CompanyRepository companyRepository, CompanyMapper companyMapper, EmployeeMapper employeeMapper, EmployeeRepository employeeRepository) {
         this.companyRepository = companyRepository;
         this.companyMapper = companyMapper;
         this.employeeMapper = employeeMapper;
+        this.employeeRepository = employeeRepository;
     }
 
     public List<CompanyResponse> findAll() {
@@ -71,9 +75,15 @@ public class CompanyService {
         }
         return new PageImpl<>(companyResponses);
     }
-//TODO 员工列表分开保存
+
     public CompanyResponse save(Company newCompany) {
         Company company = companyRepository.save(newCompany);
+        List<Employee> employees = company.getEmployees();
+        if (employees != null)
+            for (Employee employee : employees) {
+                employee.setCompanyId(company.getId());
+                employeeRepository.save(employee);
+            }
         return companyMapper.CompanyToCompanyResponse(company);
     }
 
